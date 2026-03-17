@@ -146,7 +146,45 @@ function formatUploadDate() {
     });
 }
 
-function buildDashboard(db) {
+function buildLecturerDashboard(db, user) {
+    const lecturer = db.lecturers.find((l) => l.id === user.id);
+    const courses = lecturer ? lecturer.courses : [];
+
+    const teachingSchedule = {};
+    Object.keys(db.timetable).forEach((day) => {
+        const rows = db.timetable[day].filter((r) => courses.includes(r.s));
+        teachingSchedule[day] = rows.length > 0 ? rows : [{ t: '-', r: '-', s: 'No lectures scheduled', l: '' }];
+    });
+
+    const examItems = (db.exams.items || []).filter((e) => courses.includes(e.subject));
+
+    const consultations = db.consultations
+        .filter((c) => c.lecturerId === user.id)
+        .map((c) => {
+            const student = db.users.find((u) => u.id === c.studentId);
+            return {
+                ...c,
+                studentName: student ? student.name : c.studentId,
+                studentProgram: student ? `${student.program}, ${student.level}` : ''
+            };
+        })
+        .reverse();
+
+    const myResources = db.resources.filter((r) => r.lecturer === user.name).slice(0, 4);
+
+    return {
+        announcements: db.announcements,
+        teachingSchedule,
+        exams: { semester: db.exams.semester, items: examItems },
+        consultations,
+        myResources,
+        courses,
+        lecturerInfo: lecturer || {}
+    };
+}
+
+function buildDashboard(db, user) {
+    if (user && user.role === 'lecturer') return buildLecturerDashboard(db, user);
     return {
         attendance: db.attendance,
         announcements: db.announcements,
@@ -218,7 +256,7 @@ async function handleApi(req, res, url) {
     if (req.method === 'GET' && url.pathname === '/api/dashboard') {
         const sessionUser = requireAuth(req, res);
         if (!sessionUser) return;
-        sendJson(res, 200, buildDashboard(sessionUser.db));
+        sendJson(res, 200, buildDashboard(sessionUser.db, sessionUser.user));
         return;
     }
 

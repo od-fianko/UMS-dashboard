@@ -3,32 +3,79 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = await UMS.requireAuth();
     const data = await UMS.api('/api/dashboard');
 
-    /* ── Greeting ── */
-    const greetEl = document.getElementById('dash-greeting');
-    if (greetEl) {
-        const hour = new Date().getHours();
-        const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-        const firstName = user.name.split(' ')[0];
-        const today = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
-        greetEl.innerHTML = `
-            <div style="margin-bottom:1.6rem;padding:1.3rem 1.5rem;background:linear-gradient(135deg,rgba(61,90,241,.09),rgba(34,200,138,.08)),var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
-                <div>
-                    <div style="font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--text);letter-spacing:-.02em">${greeting}, ${firstName}.</div>
-                    <div style="font-size:.8rem;color:var(--text-dim);margin-top:.25rem">${today} &nbsp;·&nbsp; ${user.program}, ${user.level}</div>
-                </div>
-                <div style="display:flex;gap:.5rem;flex-shrink:0;">
-                    <a href="exam.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(61,90,241,.09);color:var(--primary);border:1px solid rgba(61,90,241,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(61,90,241,.16)'" onmouseout="this.style.background='rgba(61,90,241,.09)'">
-                        <span class="material-icons-sharp" style="font-size:1rem">event</span>Exams
-                    </a>
-                    <a href="timetable.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(34,200,138,.08);color:#16a870;border:1px solid rgba(34,200,138,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(34,200,138,.15)'" onmouseout="this.style.background='rgba(34,200,138,.08)'">
-                        <span class="material-icons-sharp" style="font-size:1rem">calendar_today</span>Schedule
-                    </a>
-                </div>
-            </div>
-        `;
+    if (user.role === 'lecturer') {
+        renderLecturerDashboard(data, user);
+    } else {
+        renderStudentDashboard(data, user);
     }
+});
 
-    /* ── Attendance cards ── */
+/* ── Shared greeting banner ── */
+function renderGreeting(user) {
+    const greetEl = document.getElementById('dash-greeting');
+    if (!greetEl) return;
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+    const today = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+    const subtitle = user.role === 'lecturer' ? user.program : `${user.program}, ${user.level}`;
+
+    const links = user.role === 'lecturer' ? `
+        <a href="resources.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(61,90,241,.09);color:var(--primary);border:1px solid rgba(61,90,241,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(61,90,241,.16)'" onmouseout="this.style.background='rgba(61,90,241,.09)'">
+            <span class="material-icons-sharp" style="font-size:1rem">upload_file</span>Upload
+        </a>
+        <a href="lecturers.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(34,200,138,.08);color:#16a870;border:1px solid rgba(34,200,138,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(34,200,138,.15)'" onmouseout="this.style.background='rgba(34,200,138,.08)'">
+            <span class="material-icons-sharp" style="font-size:1rem">people</span>Staff
+        </a>` : `
+        <a href="exam.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(61,90,241,.09);color:var(--primary);border:1px solid rgba(61,90,241,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(61,90,241,.16)'" onmouseout="this.style.background='rgba(61,90,241,.09)'">
+            <span class="material-icons-sharp" style="font-size:1rem">event</span>Exams
+        </a>
+        <a href="timetable.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(34,200,138,.08);color:#16a870;border:1px solid rgba(34,200,138,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(34,200,138,.15)'" onmouseout="this.style.background='rgba(34,200,138,.08)'">
+            <span class="material-icons-sharp" style="font-size:1rem">calendar_today</span>Schedule
+        </a>`;
+
+    greetEl.innerHTML = `
+        <div style="margin-bottom:1.6rem;padding:1.3rem 1.5rem;background:linear-gradient(135deg,rgba(61,90,241,.09),rgba(34,200,138,.08)),var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+            <div>
+                <div style="font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--text);letter-spacing:-.02em">${greeting}, ${user.name}.</div>
+                <div style="font-size:.8rem;color:var(--text-dim);margin-top:.25rem">${today} &nbsp;·&nbsp; ${subtitle}</div>
+            </div>
+            <div style="display:flex;gap:.5rem;flex-shrink:0;">${links}</div>
+        </div>
+    `;
+}
+
+/* ── Announcements (shared) ── */
+function renderAnnouncements(announcements) {
+    const el = document.getElementById('announcements-list');
+    if (!el) return;
+    el.innerHTML = announcements.map((item) => `
+        <div class="ann-row">
+            <div class="ann-dot" style="background:${item.color}"></div>
+            <div>
+                <div class="ann-txt">${item.title}</div>
+                <div class="ann-time">${item.time}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+/* ── Time parser helper ── */
+function getMinutes(timeStr) {
+    if (!timeStr || timeStr === '-') return -1;
+    const m = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (!m) return -1;
+    let h = parseInt(m[1]);
+    if (m[3].toUpperCase() === 'PM' && h !== 12) h += 12;
+    if (m[3].toUpperCase() === 'AM' && h === 12) h = 0;
+    return h * 60 + parseInt(m[2]);
+}
+
+/* ── STUDENT DASHBOARD ── */
+function renderStudentDashboard(data, user) {
+    renderGreeting(user);
+    renderAnnouncements(data.announcements);
+
+    /* Attendance cards */
     const R = 32;
     const C = 2 * Math.PI * R;
     const card = (s) => {
@@ -53,31 +100,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     document.getElementById('att-grid').innerHTML = data.attendance.map(card).join('');
 
-    /* Animate donuts after paint */
     requestAnimationFrame(() => {
         document.querySelectorAll('.d-fill').forEach((el) => {
             const fill = Number(el.dataset.fill);
-            setTimeout(() => {
-                el.style.strokeDasharray = `${fill} ${C - fill}`;
-            }, 80);
+            setTimeout(() => { el.style.strokeDasharray = `${fill} ${C - fill}`; }, 80);
         });
     });
 
-    /* ── Announcements ── */
-    const announcements = document.getElementById('announcements-list');
-    if (announcements) {
-        announcements.innerHTML = data.announcements.map((item) => `
-            <div class="ann-row">
-                <div class="ann-dot" style="background:${item.color}"></div>
-                <div>
-                    <div class="ann-txt">${item.title}</div>
-                    <div class="ann-time">${item.time}</div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    /* ── Lecturer preview ── */
+    /* Lecturer preview */
     const lecturers = document.getElementById('lecturer-preview');
     if (lecturers) {
         lecturers.innerHTML = data.lecturers.map((item) => `
@@ -92,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `).join('');
     }
 
-    /* ── Shared Resources preview ── */
+    /* Shared Resources preview */
     const resourcePreview = document.getElementById('resource-preview');
     if (resourcePreview) {
         resourcePreview.innerHTML = `
@@ -112,43 +142,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
             `).join('')}
             <div class="resource-footer">
-                <p>${user.role === 'lecturer' ? 'Upload new slides or assignment files from the shared resources hub.' : 'Lecturers can share slides, notes and assignment files from one place.'}</p>
+                <p>Lecturers can share slides, notes and assignment files from one place.</p>
                 <a href="resources.html"><span class="material-icons-sharp" style="font-size:1rem">folder</span>View all</a>
             </div>
         `;
     }
 
-    /* ── Timetable ── */
+    /* Timetable */
     const tt = data.timetable;
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const today = new Date().getDay();
-    let day = today;
-
-    function getMinutes(timeStr) {
-        if (!timeStr || timeStr === '-') return -1;
-        const m = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
-        if (!m) return -1;
-        let h = parseInt(m[1]);
-        if (m[3].toUpperCase() === 'PM' && h !== 12) h += 12;
-        if (m[3].toUpperCase() === 'AM' && h === 12) h = 0;
-        return h * 60 + parseInt(m[2]);
-    }
+    const todayNum = new Date().getDay();
+    let day = todayNum;
 
     function renderTT() {
         const now = new Date();
         const currentMins = now.getHours() * 60 + now.getMinutes();
-        document.getElementById('tt-title').textContent = day === today ? "Today's Timetable" : `${days[day]}'s Timetable`;
+        document.getElementById('tt-title').textContent = day === todayNum ? "Today's Timetable" : `${days[day]}'s Timetable`;
         const rows = tt[day];
         document.getElementById('tt-body').innerHTML = rows.map((row, idx) => {
             const rowMins = getMinutes(row.t);
             const nextMins = idx + 1 < rows.length ? getMinutes(rows[idx + 1].t) : rowMins + 60;
             let rowStyle = '';
-            if (day === today && rowMins >= 0) {
-                if (currentMins >= rowMins && currentMins < nextMins) {
-                    rowStyle = ' class="current-class"';
-                } else if (rowMins < currentMins) {
-                    rowStyle = ' style="opacity:.55"';
-                }
+            if (day === todayNum && rowMins >= 0) {
+                if (currentMins >= rowMins && currentMins < nextMins) rowStyle = ' class="current-class"';
+                else if (rowMins < currentMins) rowStyle = ' style="opacity:.55"';
             }
             return `<tr${rowStyle}>
                 <td>${row.t}</td><td>${row.r}</td>
@@ -161,4 +178,127 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('nextDay').onclick = () => { day = (day + 1) % 7; renderTT(); };
     document.getElementById('prevDay').onclick = () => { day = (day + 6) % 7; renderTT(); };
     renderTT();
-});
+}
+
+/* ── LECTURER DASHBOARD ── */
+function renderLecturerDashboard(data, user) {
+    renderGreeting(user);
+    renderAnnouncements(data.announcements);
+
+    /* Teaching schedule */
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const todayNum = new Date().getDay();
+    let day = todayNum;
+    const tt = data.teachingSchedule;
+
+    function renderSchedule() {
+        const now = new Date();
+        const currentMins = now.getHours() * 60 + now.getMinutes();
+        const titleEl = document.getElementById('lec-tt-title');
+        if (titleEl) titleEl.textContent = day === todayNum ? "Today's Teaching Schedule" : `${days[day]}'s Teaching Schedule`;
+        const rows = (tt && tt[day]) ? tt[day] : [{ t: '-', r: '-', s: 'No lectures scheduled', l: '' }];
+        const tbody = document.getElementById('lec-tt-body');
+        if (tbody) {
+            tbody.innerHTML = rows.map((row, idx) => {
+                const rowMins = getMinutes(row.t);
+                const nextMins = idx + 1 < rows.length ? getMinutes(rows[idx + 1].t) : rowMins + 60;
+                let rowStyle = '';
+                if (day === todayNum && rowMins >= 0) {
+                    if (currentMins >= rowMins && currentMins < nextMins) rowStyle = ' class="current-class"';
+                    else if (rowMins < currentMins) rowStyle = ' style="opacity:.55"';
+                }
+                return `<tr${rowStyle}>
+                    <td>${row.t}</td><td>${row.r}</td>
+                    <td><strong>${row.s}</strong></td>
+                    <td>${row.l ? `<span class="pill pill-${row.l.toLowerCase()}">${row.l}</span>` : ''}</td>
+                </tr>`;
+            }).join('');
+        }
+    }
+
+    const nextDayBtn = document.getElementById('lec-nextDay');
+    const prevDayBtn = document.getElementById('lec-prevDay');
+    if (nextDayBtn) nextDayBtn.onclick = () => { day = (day + 1) % 7; renderSchedule(); };
+    if (prevDayBtn) prevDayBtn.onclick = () => { day = (day + 6) % 7; renderSchedule(); };
+    renderSchedule();
+
+    /* Exam dates */
+    const examsWrap = document.getElementById('lec-exams-wrap');
+    if (examsWrap) {
+        if (!data.exams.items || !data.exams.items.length) {
+            examsWrap.innerHTML = `
+                <div style="padding:1.2rem 1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);font-size:.83rem;color:var(--text-dim)">
+                    No upcoming exam dates for your courses.
+                </div>`;
+        } else {
+            examsWrap.innerHTML = `<div class="lec-exam-grid">${data.exams.items.map((e, i) => `
+                <div class="lec-exam-card" style="animation-delay:${i * 0.06}s">
+                    <div class="lec-exam-date">
+                        <div class="lec-exam-day">${e.date.day}</div>
+                        <div class="lec-exam-month">${e.date.month}</div>
+                    </div>
+                    <div class="lec-exam-info">
+                        <div class="lec-exam-subject">
+                            <span class="material-icons-sharp" style="font-size:1rem;vertical-align:middle;margin-right:.3rem">${e.icon}</span>${e.subject}
+                        </div>
+                        <div class="lec-exam-meta">${e.date.weekday} &middot; ${e.time}</div>
+                        <div class="lec-exam-meta">Room ${e.room}</div>
+                    </div>
+                    <span class="lec-exam-badge">${e.status}</span>
+                </div>
+            `).join('')}</div>`;
+        }
+    }
+
+    /* Consultations */
+    const consultList = document.getElementById('consultations-list');
+    if (consultList) {
+        if (!data.consultations.length) {
+            consultList.innerHTML = '<div style="padding:1.2rem 1.5rem;font-size:.83rem;color:var(--text-dim)">No consultation requests yet.</div>';
+        } else {
+            consultList.innerHTML = data.consultations.map((c) => {
+                const initials = c.studentName.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+                const date = new Date(c.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+                return `<div class="consult-item">
+                    <div class="consult-av">${initials}</div>
+                    <div class="consult-info">
+                        <div class="consult-name">${c.studentName}</div>
+                        <div class="consult-meta">${c.studentProgram || 'Student'}</div>
+                    </div>
+                    <div class="consult-date">${date}</div>
+                </div>`;
+            }).join('');
+        }
+    }
+
+    /* My resources */
+    const resPreview = document.getElementById('lec-resource-preview');
+    if (resPreview) {
+        if (!data.myResources.length) {
+            resPreview.innerHTML = `
+                <div style="padding:1.2rem 1.5rem;font-size:.83rem;color:var(--text-dim)">You haven't uploaded any resources yet.</div>
+                <div class="resource-footer">
+                    <p>Share slides, notes and assignment files with students.</p>
+                    <a href="resources.html"><span class="material-icons-sharp" style="font-size:1rem">upload_file</span>Upload</a>
+                </div>`;
+        } else {
+            resPreview.innerHTML = `
+                ${data.myResources.map((item) => `
+                    <div class="resource-row">
+                        <div class="resource-icon"><span class="material-icons-sharp">${item.icon}</span></div>
+                        <div class="resource-main">
+                            <div class="resource-top">
+                                <div class="resource-name">${item.title}</div>
+                                <span class="resource-badge">${item.type}</span>
+                            </div>
+                            <div class="resource-meta">${item.course} &middot; ${item.uploaded}</div>
+                        </div>
+                    </div>
+                `).join('')}
+                <div class="resource-footer">
+                    <p>Upload new slides or assignment files for students.</p>
+                    <a href="resources.html"><span class="material-icons-sharp" style="font-size:1rem">upload_file</span>Manage</a>
+                </div>`;
+        }
+    }
+}

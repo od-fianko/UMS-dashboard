@@ -190,7 +190,10 @@ tbody tr{transition:background .15s,opacity .2s;}
             if (!label || !value) return;
             const text = label.textContent.trim().toLowerCase();
             if (text === 'course') value.innerHTML = user.program + '<br>' + user.level;
-            if (text === 'student id') value.textContent = user.id;
+            if (text === 'student id') {
+                label.textContent = user.role === 'lecturer' ? 'Staff ID' : 'Student ID';
+                value.textContent = user.id;
+            }
             if (text === 'email') value.textContent = user.email;
             if (text === 'address') value.textContent = user.address;
         });

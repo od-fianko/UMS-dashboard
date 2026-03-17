@@ -369,6 +369,49 @@
         .next-class-row{background:rgba(61,90,241,.05)!important;border-left:3px solid var(--primary);}
         @keyframes spin{to{transform:rotate(360deg)}}
 
+        /* ── LECTURER EXAM CARDS ── */
+        .lec-exam-grid{display:flex;flex-direction:column;gap:.7rem;}
+        .lec-exam-card{
+            display:flex;align-items:center;gap:1rem;
+            background:var(--surface);border:1px solid var(--border);
+            border-radius:var(--r-card);padding:.9rem 1.15rem;
+            box-shadow:var(--shadow-sm);animation:up .4s ease both;
+        }
+        .lec-exam-date{
+            flex-shrink:0;width:46px;text-align:center;
+            background:rgba(61,90,241,.08);border-radius:10px;padding:.45rem .3rem;
+        }
+        .lec-exam-day{font-size:1.45rem;font-weight:700;color:var(--primary);line-height:1;}
+        .lec-exam-month{font-size:.63rem;font-weight:600;color:var(--text-dim);text-transform:uppercase;margin-top:.15rem;}
+        .lec-exam-info{flex:1;min-width:0;}
+        .lec-exam-subject{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.18rem;}
+        .lec-exam-meta{font-size:.72rem;color:var(--text-dim);}
+        .lec-exam-badge{
+            flex-shrink:0;font-size:.66rem;font-weight:700;
+            padding:.25rem .6rem;border-radius:999px;
+            background:rgba(34,200,138,.12);color:#16a870;
+            border:1px solid rgba(34,200,138,.2);
+        }
+
+        /* ── CONSULTATION ITEMS ── */
+        .consult-item{
+            display:flex;align-items:center;gap:.85rem;
+            padding:.9rem 1.15rem;border-bottom:1px solid var(--border);
+            transition:background .15s;
+        }
+        .consult-item:last-child{border-bottom:none;}
+        .consult-item:hover{background:var(--surface2);}
+        .consult-av{
+            width:36px;height:36px;border-radius:50%;flex-shrink:0;
+            background:rgba(61,90,241,.12);color:var(--primary);
+            display:flex;align-items:center;justify-content:center;
+            font-weight:700;font-size:.82rem;
+        }
+        .consult-info{flex:1;min-width:0;}
+        .consult-name{font-size:.84rem;font-weight:600;color:var(--text);}
+        .consult-meta{font-size:.71rem;color:var(--text-dim);margin-top:.1rem;}
+        .consult-date{font-size:.72rem;color:var(--text-dim);flex-shrink:0;}
+
         /* ── RESPONSIVE ── */
         @media(max-width:1100px){.att-grid{grid-template-columns:repeat(3,1fr);}}
         @media(max-width:920px){.wrap{grid-template-columns:1fr;}.att-grid{grid-template-columns:repeat(3,1fr);}}
@@ -457,73 +500,79 @@
 </nav>
 
 <div class="wrap">
-    <!-- LEFT -->
+    <!-- LEFT COLUMN -->
     <div>
         <div id="dash-greeting"></div>
-        <div class="stitle">Attendance</div>
-        <div class="att-grid" id="att-grid"></div>
 
-        <div class="tt-head">
-            <div class="stitle" id="tt-title">Today's Timetable</div>
-            <a class="hero-link" href="resources.html">
-                <span class="material-icons-sharp" style="font-size:1rem">upload_file</span>
-                Shared files
-            </a>
-            <div class="day-btn" id="prevDay">&#8249;</div>
-            <div class="day-btn" id="nextDay">&#8250;</div>
+        <!-- STUDENT ONLY: Attendance + Timetable -->
+        <div data-student-only style="display:none">
+            <div class="stitle">Attendance</div>
+            <div class="att-grid" id="att-grid"></div>
+
+            <div class="tt-head">
+                <div class="stitle" id="tt-title">Today's Timetable</div>
+                <a class="hero-link" href="resources.html">
+                    <span class="material-icons-sharp" style="font-size:1rem">upload_file</span>
+                    Shared files
+                </a>
+                <div class="day-btn" id="prevDay">&#8249;</div>
+                <div class="day-btn" id="nextDay">&#8250;</div>
+            </div>
+            <div class="tt-box">
+                <table>
+                    <thead><tr><th>Time</th><th>Room No.</th><th>Subject</th><th>Lecture</th></tr></thead>
+                    <tbody id="tt-body"></tbody>
+                </table>
+            </div>
         </div>
-        <div class="tt-box">
-            <table>
-                <thead><tr><th>Time</th><th>Room No.</th><th>Subject</th><th>Lecture</th></tr></thead>
-                <tbody id="tt-body"></tbody>
-            </table>
+
+        <!-- LECTURER ONLY: Teaching Schedule + Exam Dates -->
+        <div data-lecturer-only style="display:none">
+            <div class="tt-head">
+                <div class="stitle" id="lec-tt-title">Today's Teaching Schedule</div>
+                <div class="day-btn" id="lec-prevDay">&#8249;</div>
+                <div class="day-btn" id="lec-nextDay">&#8250;</div>
+            </div>
+            <div class="tt-box">
+                <table>
+                    <thead><tr><th>Time</th><th>Room No.</th><th>Subject</th><th>Type</th></tr></thead>
+                    <tbody id="lec-tt-body"></tbody>
+                </table>
+            </div>
+
+            <div style="margin-top:2rem">
+                <div class="stitle">Upcoming Exam Dates</div>
+                <div id="lec-exams-wrap"></div>
+            </div>
         </div>
     </div>
 
-    <!-- RIGHT -->
+    <!-- RIGHT COLUMN -->
     <div class="right-col">
+        <!-- Announcements — visible to both roles -->
         <div>
             <div class="r-title">Announcements</div>
-            <div class="r-card" id="announcements-list">
-                <div class="ann-row">
-                    <div class="ann-dot" style="background:#3d5af1"></div>
-                    <div><div class="ann-txt">Mid-term Exam Schedule Released</div><div class="ann-time">2 hours ago</div></div>
-                </div>
-                <div class="ann-row">
-                    <div class="ann-dot" style="background:#f5a623"></div>
-                    <div><div class="ann-txt">Library Timing Changed</div><div class="ann-time">5 hours ago</div></div>
-                </div>
-                <div class="ann-row">
-                    <div class="ann-dot" style="background:#7ed321"></div>
-                    <div><div class="ann-txt">New Course Material Uploaded</div><div class="ann-time">1 day ago</div></div>
-                </div>
-            </div>
+            <div class="r-card" id="announcements-list"></div>
         </div>
 
-        <div>
+        <!-- STUDENT ONLY: Lecturer directory + Shared resources -->
+        <div data-student-only style="display:none">
             <div class="r-title">Lecturers</div>
-            <div class="r-card" id="lecturer-preview">
-                <div class="lec-row" onclick="location.href='lecturers.html'">
-                    <div class="lec-av" style="background:#dde8ff;color:#3d5af1">JW</div>
-                    <div><div class="lec-name">Dr. Gaddafi</div><div class="lec-sub">Computer Networks</div></div>
-                    <div class="lec-more"><span class="material-icons-sharp" style="font-size:1.1rem">more_vert</span></div>
-                </div>
-                <div class="lec-row" onclick="location.href='lecturers.html'">
-                    <div class="lec-av" style="background:#ffe8df;color:#c05030">SC</div>
-                    <div><div class="lec-name">Dr. Peasah Chen</div><div class="lec-sub">Database Systems</div></div>
-                    <div class="lec-more"><span class="material-icons-sharp" style="font-size:1.1rem">more_vert</span></div>
-                </div>
-                <div class="lec-row" onclick="location.href='lecturers.html'">
-                    <div class="lec-av" style="background:#d6f5e8;color:#1a7a50">MB</div>
-                    <div><div class="lec-name">Dr. Michael Brown</div><div class="lec-sub">Mathematics</div></div>
-                    <div class="lec-more"><span class="material-icons-sharp" style="font-size:1.1rem">more_vert</span></div>
-                </div>
-            </div>
+            <div class="r-card" id="lecturer-preview"></div>
         </div>
-
-        <div>
+        <div data-student-only style="display:none">
             <div class="r-title">Shared Resources</div>
             <div class="r-card" id="resource-preview"></div>
+        </div>
+
+        <!-- LECTURER ONLY: Consultations + My resources -->
+        <div data-lecturer-only style="display:none">
+            <div class="r-title">Student Consultations</div>
+            <div class="r-card" id="consultations-list"></div>
+        </div>
+        <div data-lecturer-only style="display:none">
+            <div class="r-title">My Resources</div>
+            <div class="r-card" id="lec-resource-preview"></div>
         </div>
     </div>
 </div>
