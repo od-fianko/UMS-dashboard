@@ -1,0 +1,518 @@
+{
+  "users": [
+    {
+      "id": "0005678",
+      "role": "student",
+      "name": "Haqq",
+      "email": "haqq@student.ums.edu",
+      "address": "Tema",
+      "program": "BSC Computer Science",
+      "level": "2nd Year",
+      "password": "scrypt$0dc26f99eb6546b083de24510f659aa1$6c1eee04b423897d043ec5f524479e5abf3a7afa5f36fa38914e63de4655e35f7fee5311dcfe47a2a19ba29b5cd94919f86b24c4be926f94769ad4263630957a"
+    },
+    {
+      "id": "LEC001",
+      "role": "lecturer",
+      "name": "Dr. Gaddafi",
+      "email": "gaddafi@ums.edu",
+      "address": "COS Block, FF5",
+      "program": "Department of Computer Science",
+      "level": "Lecturer",
+      "password": "scrypt$4fa2e34c26c20ccf5f9d84ddce7dc520$268cf635ad0c869013efc55569e4e0e389aceaca1155fb92ead8d9e017d6a2ee00ba9a58c4b1dce225b09dac26b620a5f1cfae20fce2b8236678a3a462f558cc"
+    }
+  ],
+  "sessions": [
+    {
+      "token": "adb736908da2ecd4072a8109c342b157e33f1daf5e5c2322",
+      "userId": "0005678",
+      "createdAt": "2026-03-17T13:54:22.396Z"
+    }
+  ],
+  "attendance": [
+    {
+      "icon": "architecture",
+      "color": "#4a90e2",
+      "name": "Computer Architecture",
+      "score": "10/14",
+      "pct": 71
+    },
+    {
+      "icon": "code",
+      "color": "#f5a623",
+      "name": "Advanced Functions",
+      "score": "11/14",
+      "pct": 78
+    },
+    {
+      "icon": "computer",
+      "color": "#7ed321",
+      "name": "Computer Networks",
+      "score": "12/14",
+      "pct": 85
+    },
+    {
+      "icon": "dns",
+      "color": "#e85d75",
+      "name": "DNS & Protocols",
+      "score": "13/14",
+      "pct": 93
+    },
+    {
+      "icon": "router",
+      "color": "#9b59b6",
+      "name": "Router Configuration",
+      "score": "8/14",
+      "pct": 57
+    }
+  ],
+  "announcements": [
+    {
+      "title": "CS849: new slides uploaded",
+      "time": "Just now",
+      "color": "#3d5af1"
+    },
+    {
+      "title": "Mid-term Exam Schedule Released",
+      "time": "2 hours ago",
+      "color": "#3d5af1"
+    },
+    {
+      "title": "Library Timing Changed",
+      "time": "5 hours ago",
+      "color": "#f5a623"
+    },
+    {
+      "title": "New Course Material Uploaded",
+      "time": "1 day ago",
+      "color": "#7ed321"
+    }
+  ],
+  "timetable": {
+    "0": [
+      {
+        "t": "-",
+        "r": "-",
+        "s": "No classes - Rest Day",
+        "l": ""
+      }
+    ],
+    "1": [
+      {
+        "t": "09:10 AM",
+        "r": "36-718",
+        "s": "DBMS130",
+        "l": "Lecture"
+      },
+      {
+        "t": "10:11 AM",
+        "r": "36-718",
+        "s": "MTH166",
+        "l": "Tutorial"
+      },
+      {
+        "t": "12:01 PM",
+        "r": "36-718",
+        "s": "NS200",
+        "l": "Lecture"
+      }
+    ],
+    "2": [
+      {
+        "t": "09:10 AM",
+        "r": "27-304Y",
+        "s": "MTH166",
+        "l": "Tutorial"
+      },
+      {
+        "t": "11:00 AM",
+        "r": "28-107",
+        "s": "CS849",
+        "l": "Lecture"
+      },
+      {
+        "t": "12:00 PM",
+        "r": "28-107",
+        "s": "CS849",
+        "l": "Lecture"
+      },
+      {
+        "t": "02:00 PM",
+        "r": "36-718",
+        "s": "NS200",
+        "l": "Lecture"
+      }
+    ],
+    "3": [
+      {
+        "t": "10:00 AM",
+        "r": "33-309",
+        "s": "DBMS130",
+        "l": "Lecture"
+      },
+      {
+        "t": "11:00 AM",
+        "r": "36-719",
+        "s": "CS200",
+        "l": "Lecture"
+      }
+    ],
+    "4": [
+      {
+        "t": "11:00 AM",
+        "r": "33-309",
+        "s": "MTH166",
+        "l": "Lecture"
+      },
+      {
+        "t": "01:00 PM",
+        "r": "36-719",
+        "s": "CS849",
+        "l": "Lecture"
+      },
+      {
+        "t": "02:00 PM",
+        "r": "36-718",
+        "s": "NS200",
+        "l": "Lecture"
+      }
+    ],
+    "5": [
+      {
+        "t": "10:00 AM",
+        "r": "33-309",
+        "s": "MEC103",
+        "l": "Lecture"
+      },
+      {
+        "t": "11:00 AM",
+        "r": "33-309",
+        "s": "MEC103",
+        "l": "Lecture"
+      },
+      {
+        "t": "02:00 PM",
+        "r": "33-601",
+        "s": "CS849",
+        "l": "Tutorial"
+      }
+    ],
+    "6": [
+      {
+        "t": "09:00 AM",
+        "r": "34-604",
+        "s": "DBMS130",
+        "l": "Tutorial"
+      },
+      {
+        "t": "10:00 AM",
+        "r": "34-604",
+        "s": "DBMS130",
+        "l": "Lecture"
+      },
+      {
+        "t": "01:00 PM",
+        "r": "33-309",
+        "s": "MTH166",
+        "l": "Lecture"
+      }
+    ]
+  },
+  "exams": {
+    "semester": "Mar 2026 - Semester Finals",
+    "stats": {
+      "scheduled": 5,
+      "countdown": "14 days",
+      "hall": "36-718"
+    },
+    "items": [
+      {
+        "date": {
+          "day": "24",
+          "month": "Mar",
+          "weekday": "Tuesday"
+        },
+        "time": "09:00 - 12:00 PM",
+        "subject": "CS200",
+        "icon": "computer",
+        "room": "36-718",
+        "status": "Upcoming"
+      },
+      {
+        "date": {
+          "day": "26",
+          "month": "Mar",
+          "weekday": "Thursday"
+        },
+        "time": "09:00 - 12:00 PM",
+        "subject": "DBMS130",
+        "icon": "dns",
+        "room": "36-718",
+        "status": "Upcoming"
+      },
+      {
+        "date": {
+          "day": "28",
+          "month": "Mar",
+          "weekday": "Saturday"
+        },
+        "time": "09:00 - 12:00 PM",
+        "subject": "MTH166",
+        "icon": "functions",
+        "room": "36-718",
+        "status": "Upcoming"
+      },
+      {
+        "date": {
+          "day": "30",
+          "month": "Mar",
+          "weekday": "Monday"
+        },
+        "time": "09:00 - 12:00 PM",
+        "subject": "NS200",
+        "icon": "router",
+        "room": "36-718",
+        "status": "Upcoming"
+      },
+      {
+        "date": {
+          "day": "01",
+          "month": "Apr",
+          "weekday": "Wednesday"
+        },
+        "time": "09:00 - 12:00 PM",
+        "subject": "CS849",
+        "icon": "memory",
+        "room": "36-718",
+        "status": "Upcoming"
+      }
+    ]
+  },
+  "lecturers": [
+    {
+      "id": "LEC001",
+      "name": "Dr. Gaddafi",
+      "dept": "Computer Networks",
+      "av": "JW",
+      "bg": "#3d5af1",
+      "status": "available",
+      "slabel": "Available",
+      "sclass": "sp-avail",
+      "courses": [
+        "CS849",
+        "NS200"
+      ],
+      "hours": "Mon, Wed - 10:00 AM - 12:00 PM",
+      "location": "COS Block, FF5",
+      "mode": "Physical",
+      "micon": "meeting_room"
+    },
+    {
+      "id": "LEC002",
+      "name": "Dr. Peasah",
+      "dept": "Database Systems",
+      "av": "SC",
+      "bg": "#e85d75",
+      "status": "available",
+      "slabel": "Available",
+      "sclass": "sp-avail",
+      "courses": [
+        "DBMS130"
+      ],
+      "hours": "Tue, Thu - 09:00 AM - 11:00 AM",
+      "location": "Block 36, Room 204",
+      "mode": "Physical",
+      "micon": "meeting_room"
+    },
+    {
+      "id": "LEC003",
+      "name": "Dr. Michael Brown",
+      "dept": "Mathematics",
+      "av": "MB",
+      "bg": "#22c88a",
+      "status": "online",
+      "slabel": "Online",
+      "sclass": "sp-online",
+      "courses": [
+        "MTH166"
+      ],
+      "hours": "Mon, Fri - 02:00 PM - 04:00 PM",
+      "location": "Microsoft Teams",
+      "mode": "Virtual",
+      "micon": "videocam"
+    },
+    {
+      "id": "LEC004",
+      "name": "Mr. Kofi Darko",
+      "dept": "Network Engineering",
+      "av": "KD",
+      "bg": "#f5a623",
+      "status": "available",
+      "slabel": "Available",
+      "sclass": "sp-avail",
+      "courses": [
+        "NS200"
+      ],
+      "hours": "Wed - 01:00 PM - 03:00 PM",
+      "location": "Block 33, Room 101",
+      "mode": "Physical",
+      "micon": "meeting_room"
+    },
+    {
+      "id": "LEC005",
+      "name": "Dr. Abena Frimpong",
+      "dept": "Mechanical Engineering",
+      "av": "AF",
+      "bg": "#7c3aed",
+      "status": "busy",
+      "slabel": "In Meeting",
+      "sclass": "sp-busy",
+      "courses": [
+        "MEC103"
+      ],
+      "hours": "Tue, Sat - 11:00 AM - 01:00 PM",
+      "location": "Block 34, Room 301",
+      "mode": "Physical",
+      "micon": "meeting_room"
+    },
+    {
+      "id": "LEC006",
+      "name": "Prof. James Otieno",
+      "dept": "Computer Science",
+      "av": "JO",
+      "bg": "#0ea5e9",
+      "status": "online",
+      "slabel": "Online",
+      "sclass": "sp-online",
+      "courses": [
+        "CS849",
+        "CS200"
+      ],
+      "hours": "Thu - 10:00 AM - 12:00 PM",
+      "location": "Google Meet",
+      "mode": "Virtual",
+      "micon": "videocam"
+    },
+    {
+      "id": "LEC007",
+      "name": "Dr. Efua Asare",
+      "dept": "Mathematics",
+      "av": "EA",
+      "bg": "#10b981",
+      "status": "available",
+      "slabel": "Available",
+      "sclass": "sp-avail",
+      "courses": [
+        "MTH166"
+      ],
+      "hours": "Mon, Wed, Fri - 08:00 AM - 10:00 AM",
+      "location": "Block 27, Room 110",
+      "mode": "Physical",
+      "micon": "meeting_room"
+    },
+    {
+      "id": "LEC008",
+      "name": "Mr. Bright Asiedu",
+      "dept": "Network Engineering",
+      "av": "BA",
+      "bg": "#f59e0b",
+      "status": "away",
+      "slabel": "On Leave",
+      "sclass": "sp-away",
+      "courses": [
+        "NS200"
+      ],
+      "hours": "Unavailable this week",
+      "location": "Block 33, Room 205",
+      "mode": "Unavailable",
+      "micon": "event_busy"
+    }
+  ],
+  "resources": [
+    {
+      "id": "918572ed-1191-4250-ab1a-90d8e348d330",
+      "title": "Computer Networks Week 8",
+      "type": "Slides",
+      "course": "CS849",
+      "lecturer": "Dr. Gaddafi",
+      "description": "COBER PROTOCOLS",
+      "fileName": "kendall_sad8e_ch03-1.pdf",
+      "size": "0.7 MB",
+      "uploaded": "10 Mar, 14:30",
+      "dueDate": "2026-03-10",
+      "icon": "slideshow",
+      "filePath": "/uploads/1773153000823-kendall_sad8e_ch03-1.pdf"
+    },
+    {
+      "id": "res-1",
+      "title": "Computer Networks Week 6 Slides",
+      "type": "Slides",
+      "course": "NS200",
+      "lecturer": "Dr. Gaddafi",
+      "description": "Routing basics, subnetting recap and practice questions for the next class.",
+      "fileName": "networks-week-6.pdf",
+      "size": "3.1 MB",
+      "uploaded": "Today, 08:45 AM",
+      "dueDate": "",
+      "icon": "slideshow",
+      "filePath": ""
+    },
+    {
+      "id": "res-2",
+      "title": "DBMS Mini Project Brief",
+      "type": "Assignment",
+      "course": "DBMS130",
+      "lecturer": "Dr. Peasah",
+      "description": "Design a normalized schema and submit an ERD with five sample queries.",
+      "fileName": "dbms-project-brief.pdf",
+      "size": "1.4 MB",
+      "uploaded": "Yesterday, 04:10 PM",
+      "dueDate": "2026-03-18",
+      "icon": "assignment",
+      "filePath": ""
+    },
+    {
+      "id": "res-3",
+      "title": "Calculus Revision Handout",
+      "type": "Handout",
+      "course": "MTH166",
+      "lecturer": "Dr. Michael Brown",
+      "description": "Selected revision problems and worked examples for the coming assessment.",
+      "fileName": "mth166-revision.docx",
+      "size": "860 KB",
+      "uploaded": "Mar 8, 09:20 AM",
+      "dueDate": "",
+      "icon": "description",
+      "filePath": ""
+    },
+    {
+      "id": "res-4",
+      "title": "OSI Lab Worksheet",
+      "type": "Lab",
+      "course": "CS849",
+      "lecturer": "Prof. James Otieno",
+      "description": "Lab guide for packet inspection tasks, troubleshooting steps and report template.",
+      "fileName": "osi-lab-sheet.pdf",
+      "size": "2.0 MB",
+      "uploaded": "Mar 7, 01:30 PM",
+      "dueDate": "2026-03-15",
+      "icon": "science",
+      "filePath": ""
+    }
+  ],
+  "consultations": [
+    {
+      "id": "c2e78a84-7a95-4753-be8a-957af308d860",
+      "studentId": "0005678",
+      "lecturerId": "LEC002",
+      "lecturerName": "Dr. Peasah",
+      "createdAt": "2026-03-10T14:40:24.400Z"
+    },
+    {
+      "id": "9244638c-8524-4289-89bc-af9b94da00f8",
+      "studentId": "0005678",
+      "lecturerId": "LEC003",
+      "lecturerName": "Dr. Michael Brown",
+      "createdAt": "2026-03-10T15:24:04.382Z"
+    }
+  ]
+}
