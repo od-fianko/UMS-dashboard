@@ -21,13 +21,7 @@
       "password": "scrypt$4fa2e34c26c20ccf5f9d84ddce7dc520$268cf635ad0c869013efc55569e4e0e389aceaca1155fb92ead8d9e017d6a2ee00ba9a58c4b1dce225b09dac26b620a5f1cfae20fce2b8236678a3a462f558cc"
     }
   ],
-  "sessions": [
-    {
-      "token": "268d3c68ca38c37f14e7940aea7834373dd023d4f8826d16",
-      "userId": "LEC001",
-      "createdAt": "2026-03-17T15:05:58.140Z"
-    }
-  ],
+  "sessions": [],
   "attendance": [
     {
       "icon": "architecture",
