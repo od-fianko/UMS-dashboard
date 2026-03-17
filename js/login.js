@@ -1,11 +1,22 @@
 let role = 'student';
 
+const DEMO = {
+    student: { label: 'Student ID', placeholder: 'e.g. 0005678', id: '0005678', pw: 'student123' },
+    lecturer: { label: 'Staff ID',   placeholder: 'e.g. LEC001',  id: 'LEC001',  pw: 'lecturer123' }
+};
+
 function selectRole(btn) {
     document.querySelectorAll('.role-btn').forEach((b) => b.classList.remove('selected'));
     btn.classList.add('selected');
     role = btn.dataset.role;
-    document.getElementById('id-label').textContent = role === 'student' ? 'Student ID' : 'Staff ID';
-    document.getElementById('uid').placeholder = role === 'student' ? 'e.g. 0005678' : 'e.g. LEC001';
+    const d = DEMO[role];
+    document.getElementById('id-label').textContent = d.label;
+    document.getElementById('uid').placeholder = d.placeholder;
+    const hint = document.getElementById('demo-hint');
+    if (hint) {
+        hint.innerHTML = `Use <strong>${d.label}:</strong> ${d.id} &nbsp;|&nbsp; <strong>Password:</strong> ${d.pw}<br>
+            <span style="font-size:.72rem;color:var(--text-dim);">Click "Sign In" to enter the dashboard.</span>`;
+    }
 }
 
 function togglePw() {
