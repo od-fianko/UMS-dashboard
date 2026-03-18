@@ -75,7 +75,7 @@ async function showForgot() {
         body: { id, role },
         auth: false
     });
-    alert(response.message);
+    UMS.toast(response.message, 'info', 5000);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

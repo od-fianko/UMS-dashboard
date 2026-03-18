@@ -12,16 +12,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (titleEl) titleEl.textContent = isLecturer ? 'Teaching Schedule' : 'Timetable';
     if (tableHeaders[2]) tableHeaders[2].textContent = isLecturer ? 'Course' : 'Subject';
 
-    function getMinutes(timeStr) {
-        if (!timeStr || timeStr === '-') return -1;
-        const m = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
-        if (!m) return -1;
-        let h = parseInt(m[1]);
-        if (m[3].toUpperCase() === 'PM' && h !== 12) h += 12;
-        if (m[3].toUpperCase() === 'AM' && h === 12) h = 0;
-        return h * 60 + parseInt(m[2]);
-    }
-
     function renderStrip() {
         document.getElementById('week-strip').innerHTML = days.map((day, index) => `
             <button class="wt${index === cur ? ' active' : ''}${index === today ? ' today-mark' : ''}" onclick="setCur(${index})">${day}</button>
@@ -50,12 +40,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const now = new Date();
-        const currentMins = now.getHours() * 60 + now.getMinutes();
+        const currentMins = now.getHours() * 60 + now.UMS.getMinutes();
         let nextClassIdx = -1;
 
         document.getElementById('tt-body').innerHTML = rows.map((row, idx) => {
-            const rowMins = getMinutes(row.t);
-            const nextRowMins = idx + 1 < rows.length ? getMinutes(rows[idx + 1].t) : rowMins + 60;
+            const rowMins = UMS.getMinutes(row.t);
+            const nextRowMins = idx + 1 < rows.length ? UMS.getMinutes(rows[idx + 1].t) : rowMins + 60;
             let trClass = '';
             let trStyle = '';
             let indicator = '';

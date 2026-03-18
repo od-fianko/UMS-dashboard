@@ -17,7 +17,7 @@ function setFilter(btn) {
 function renderStats(items) {
     const assignments = items.filter((item) => item.type === 'Assignment').length;
     const slides = items.filter((item) => item.type === 'Slides').length;
-    const latest = items[0] ? items[0].uploaded : 'No uploads yet';
+    const latest = items[0] ? UMS.esc(items[0].uploaded) : 'No uploads yet';
     document.getElementById('stats').innerHTML = `
         <div class="stats-card"><div class="stats-icon ic-blue"><span class="material-icons-sharp">folder</span></div><div><div class="stats-val">${items.length}</div><div class="stats-lbl">Total shared files</div></div></div>
         <div class="stats-card"><div class="stats-icon ic-green"><span class="material-icons-sharp">slideshow</span></div><div><div class="stats-val">${slides}</div><div class="stats-lbl">Lecture slide decks</div></div></div>
@@ -42,27 +42,28 @@ function renderResources() {
         return;
     }
     empty.classList.remove('show');
+    // Use data-id attributes instead of inline onclick handlers
     grid.innerHTML = filtered.map((item) => `
         <article class="resource-card">
             <div class="resource-top">
                 <div class="resource-file">
-                    <div class="file-icon"><span class="material-icons-sharp">${item.icon}</span></div>
+                    <div class="file-icon"><span class="material-icons-sharp">${UMS.esc(item.icon)}</span></div>
                     <div>
-                        <div class="resource-title">${item.title}</div>
-                        <div class="resource-author">${item.lecturer} &middot; ${item.uploaded}<br>${item.fileName}</div>
+                        <div class="resource-title">${UMS.esc(item.title)}</div>
+                        <div class="resource-author">${UMS.esc(item.lecturer)} &middot; ${UMS.esc(item.uploaded)}<br>${UMS.esc(item.fileName)}</div>
                     </div>
                 </div>
-                <span class="type-badge">${item.type}</span>
+                <span class="type-badge">${UMS.esc(item.type)}</span>
             </div>
             <div class="course-row">
-                <span class="course-chip"><span class="material-icons-sharp" style="font-size:.85rem">school</span>${item.course}</span>
-                <span class="meta-chip"><span class="material-icons-sharp" style="font-size:.85rem">data_usage</span>${item.size}</span>
+                <span class="course-chip"><span class="material-icons-sharp" style="font-size:.85rem">school</span>${UMS.esc(item.course)}</span>
+                <span class="meta-chip"><span class="material-icons-sharp" style="font-size:.85rem">data_usage</span>${UMS.esc(item.size)}</span>
             </div>
-            <div class="resource-copy">${item.description}</div>
-            ${item.type === 'Assignment' ? `<div class="assignment-box"><strong>Assignment deadline</strong><span>${formatDueDate(item.dueDate) || 'Deadline not specified yet'}</span></div>` : ''}
+            <div class="resource-copy">${UMS.esc(item.description)}</div>
+            ${item.type === 'Assignment' ? `<div class="assignment-box"><strong>Assignment deadline</strong><span>${UMS.esc(formatDueDate(item.dueDate) || 'Deadline not specified yet')}</span></div>` : ''}
             <div class="resource-actions">
-                <button class="mini-btn primary" onclick="downloadResource('${item.id}')"><span class="material-icons-sharp" style="font-size:.95rem">download</span>Download</button>
-                <button class="mini-btn" onclick="previewResource('${item.id}')"><span class="material-icons-sharp" style="font-size:.95rem">visibility</span>Preview</button>
+                <button class="mini-btn primary" data-action="download" data-id="${UMS.esc(item.id)}"><span class="material-icons-sharp" style="font-size:.95rem">download</span>Download</button>
+                <button class="mini-btn" data-action="preview" data-id="${UMS.esc(item.id)}"><span class="material-icons-sharp" style="font-size:.95rem">visibility</span>Preview</button>
             </div>
         </article>
     `).join('');
@@ -155,6 +156,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         el.textContent = currentUser.role === 'lecturer'
             ? 'Upload real files, slides and assignments for students through this shared hub.'
             : 'Browse lecturer-shared files without interrupting your existing dashboard pages.';
+    });
+
+    // Event delegation for download/preview buttons (avoids inline onclick with user-supplied IDs)
+    document.getElementById('resource-grid').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const id = btn.dataset.id;
+        if (btn.dataset.action === 'download') downloadResource(id);
+        else if (btn.dataset.action === 'preview') previewResource(id);
     });
 
     document.getElementById('share-form').addEventListener('submit', async (event) => {

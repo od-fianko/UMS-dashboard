@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const fsp = fs.promises;
 const path = require('path');
 const crypto = require('crypto');
 
@@ -9,15 +10,32 @@ const UPLOAD_DIR = path.join(ROOT, 'uploads');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
 const PORT = Number(process.env.PORT || 3000);
 
+// Session TTL: 7 days
+const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+// Rate limiting: max 10 failed login attempts per IP per 15 minutes
+const loginAttempts = new Map();
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+
+// Allowed upload file extensions
+const ALLOWED_EXTENSIONS = new Set([
+    '.pdf', '.doc', '.docx', '.ppt', '.pptx',
+    '.xls', '.xlsx', '.txt', '.png', '.jpg', '.jpeg', '.zip'
+]);
+
+const MAX_FIELD_LENGTH = 500;
+
 fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
-function readDb() {
-    return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+async function readDb() {
+    const data = await fsp.readFile(DB_FILE, 'utf8');
+    return JSON.parse(data);
 }
 
-function writeDb(db) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+async function writeDb(db) {
+    await fsp.writeFile(DB_FILE, JSON.stringify(db, null, 2));
 }
 
 function hashPassword(password, salt = crypto.randomBytes(16).toString('hex')) {
@@ -26,14 +44,20 @@ function hashPassword(password, salt = crypto.randomBytes(16).toString('hex')) {
 }
 
 function verifyPassword(password, stored) {
-    if (!stored || !stored.startsWith('scrypt$')) return password === stored;
+    if (!stored || !stored.startsWith('scrypt$')) {
+        // Timing-safe comparison for plaintext fallback
+        const a = Buffer.from(String(password));
+        const b = Buffer.from(String(stored || ''));
+        if (a.length !== b.length) return false;
+        return crypto.timingSafeEqual(a, b);
+    }
     const [, salt, hash] = stored.split('$');
     const next = crypto.scryptSync(password, salt, 64).toString('hex');
     return crypto.timingSafeEqual(Buffer.from(hash, 'hex'), Buffer.from(next, 'hex'));
 }
 
-function migratePasswords() {
-    const db = readDb();
+async function migratePasswords() {
+    const db = await readDb();
     let changed = false;
     db.users = db.users.map((user) => {
         if (!user.password.startsWith('scrypt$')) {
@@ -42,7 +66,7 @@ function migratePasswords() {
         }
         return user;
     });
-    if (changed) writeDb(db);
+    if (changed) await writeDb(db);
 }
 
 function sendJson(res, status, payload) {
@@ -113,23 +137,56 @@ function getToken(req) {
     return auth.slice(7);
 }
 
-function getSessionUser(req) {
+function isSessionValid(session) {
+    return Date.now() - new Date(session.createdAt).getTime() < SESSION_TTL_MS;
+}
+
+async function getSessionUser(req) {
     const token = getToken(req);
     if (!token) return null;
-    const db = readDb();
+    const db = await readDb();
     const session = db.sessions.find((item) => item.token === token);
-    if (!session) return null;
+    if (!session || !isSessionValid(session)) return null;
     const user = db.users.find((item) => item.id === session.userId);
     return user ? { db, session, user } : null;
 }
 
-function requireAuth(req, res) {
-    const sessionUser = getSessionUser(req);
+async function requireAuth(req, res) {
+    const sessionUser = await getSessionUser(req);
     if (!sessionUser) {
         sendJson(res, 401, { error: 'Unauthorized' });
         return null;
     }
     return sessionUser;
+}
+
+function getClientIp(req) {
+    return (req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
+}
+
+function checkRateLimit(ip) {
+    const now = Date.now();
+    const entry = loginAttempts.get(ip) || { count: 0, windowStart: now };
+    if (now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
+        entry.count = 0;
+        entry.windowStart = now;
+    }
+    return entry.count < RATE_LIMIT_MAX;
+}
+
+function recordFailedLogin(ip) {
+    const now = Date.now();
+    const entry = loginAttempts.get(ip) || { count: 0, windowStart: now };
+    if (now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
+        entry.count = 0;
+        entry.windowStart = now;
+    }
+    entry.count++;
+    loginAttempts.set(ip, entry);
+}
+
+function clearLoginAttempts(ip) {
+    loginAttempts.delete(ip);
 }
 
 function sanitizeFileName(fileName) {
@@ -196,17 +253,24 @@ function buildDashboard(db, user) {
 
 async function handleApi(req, res, url) {
     if (req.method === 'POST' && url.pathname === '/api/auth/login') {
+        const ip = getClientIp(req);
+        if (!checkRateLimit(ip)) {
+            sendJson(res, 429, { error: 'Too many login attempts. Please try again later.' });
+            return;
+        }
         const body = await parseBody(req);
-        const db = readDb();
+        const db = await readDb();
         const user = db.users.find((item) => item.id === body.id && item.role === body.role);
         if (!user || !verifyPassword(body.password || '', user.password)) {
+            recordFailedLogin(ip);
             sendJson(res, 401, { error: body.role === 'lecturer' ? 'Invalid Staff ID or password.' : 'Invalid Student ID or password.' });
             return;
         }
+        clearLoginAttempts(ip);
         const token = crypto.randomBytes(24).toString('hex');
         db.sessions = db.sessions.filter((item) => item.userId !== user.id);
         db.sessions.push({ token, userId: user.id, createdAt: new Date().toISOString() });
-        writeDb(db);
+        await writeDb(db);
         sendJson(res, 200, { token, user: publicUser(user) });
         return;
     }
@@ -220,7 +284,7 @@ async function handleApi(req, res, url) {
     }
 
     if (req.method === 'GET' && url.pathname === '/api/auth/me') {
-        const sessionUser = requireAuth(req, res);
+        const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
         sendJson(res, 200, { user: publicUser(sessionUser.user) });
         return;
@@ -228,15 +292,15 @@ async function handleApi(req, res, url) {
 
     if (req.method === 'POST' && url.pathname === '/api/auth/logout') {
         const token = getToken(req);
-        const db = readDb();
+        const db = await readDb();
         db.sessions = db.sessions.filter((item) => item.token !== token);
-        writeDb(db);
+        await writeDb(db);
         sendJson(res, 200, { ok: true });
         return;
     }
 
     if (req.method === 'POST' && url.pathname === '/api/users/password') {
-        const sessionUser = requireAuth(req, res);
+        const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
         const body = await parseBody(req);
         if (!verifyPassword(body.currentPassword || '', sessionUser.user.password)) {
@@ -248,20 +312,20 @@ async function handleApi(req, res, url) {
             return;
         }
         sessionUser.user.password = hashPassword(body.newPassword);
-        writeDb(sessionUser.db);
+        await writeDb(sessionUser.db);
         sendJson(res, 200, { ok: true });
         return;
     }
 
     if (req.method === 'GET' && url.pathname === '/api/dashboard') {
-        const sessionUser = requireAuth(req, res);
+        const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
         sendJson(res, 200, buildDashboard(sessionUser.db, sessionUser.user));
         return;
     }
 
     if (req.method === 'GET' && url.pathname === '/api/timetable') {
-        const sessionUser = requireAuth(req, res);
+        const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
         if (sessionUser.user.role === 'lecturer') {
             const dashboard = buildLecturerDashboard(sessionUser.db, sessionUser.user);
@@ -273,24 +337,28 @@ async function handleApi(req, res, url) {
     }
 
     if (req.method === 'GET' && url.pathname === '/api/exams') {
-        const sessionUser = requireAuth(req, res);
+        const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
         sendJson(res, 200, sessionUser.db.exams);
         return;
     }
 
     if (req.method === 'GET' && url.pathname === '/api/lecturers') {
-        const sessionUser = requireAuth(req, res);
+        const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
-        sendJson(res, 200, {
-            lecturers: sessionUser.db.lecturers,
-            consultations: sessionUser.db.consultations
-        });
+        const response = { lecturers: sessionUser.db.lecturers };
+        // Only return the requesting user's own consultations (prevents IDOR)
+        if (sessionUser.user.role === 'student') {
+            response.consultations = sessionUser.db.consultations.filter(
+                (c) => c.studentId === sessionUser.user.id
+            );
+        }
+        sendJson(res, 200, response);
         return;
     }
 
     if (req.method === 'POST' && url.pathname === '/api/consultations') {
-        const sessionUser = requireAuth(req, res);
+        const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
         const body = await parseBody(req);
         const lecturer = sessionUser.db.lecturers.find((item) => item.id === body.lecturerId);
@@ -305,20 +373,20 @@ async function handleApi(req, res, url) {
             lecturerName: lecturer.name,
             createdAt: new Date().toISOString()
         });
-        writeDb(sessionUser.db);
+        await writeDb(sessionUser.db);
         sendJson(res, 200, { ok: true, message: `Consultation request sent to ${lecturer.name}.` });
         return;
     }
 
     if (req.method === 'GET' && url.pathname === '/api/resources') {
-        const sessionUser = requireAuth(req, res);
+        const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
         sendJson(res, 200, { resources: sessionUser.db.resources });
         return;
     }
 
     if (req.method === 'POST' && url.pathname === '/api/resources') {
-        const sessionUser = requireAuth(req, res);
+        const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
         if (sessionUser.user.role !== 'lecturer') {
             sendJson(res, 403, { error: 'Only lecturers can upload resources.' });
@@ -331,46 +399,61 @@ async function handleApi(req, res, url) {
             return;
         }
 
+        // Input length validation
+        if (
+            String(body.title).length > MAX_FIELD_LENGTH ||
+            String(body.course).length > MAX_FIELD_LENGTH ||
+            String(body.description).length > MAX_FIELD_LENGTH * 2 ||
+            String(body.type).length > 50
+        ) {
+            sendJson(res, 400, { error: 'One or more fields exceed the maximum allowed length.' });
+            return;
+        }
+
         let filePath = '';
-        let fileName = body.fileName || 'shared-file.txt';
+        let fileName = String(body.fileName || 'shared-file.txt').slice(0, 255);
         if (body.fileData) {
             const match = String(body.fileData).match(/^data:(.+);base64,(.+)$/);
             if (!match) {
                 sendJson(res, 400, { error: 'Invalid file payload.' });
                 return;
             }
+
+            // File type whitelist
+            const ext = path.extname(fileName).toLowerCase();
+            if (!ALLOWED_EXTENSIONS.has(ext)) {
+                sendJson(res, 400, { error: `File type "${ext || '(none)'}" is not allowed. Allowed: ${[...ALLOWED_EXTENSIONS].join(', ')}` });
+                return;
+            }
+
             const safeName = `${Date.now()}-${sanitizeFileName(fileName)}`;
             const outPath = path.join(UPLOAD_DIR, safeName);
-            fs.writeFileSync(outPath, Buffer.from(match[2], 'base64'));
+            await fsp.writeFile(outPath, Buffer.from(match[2], 'base64'));
             filePath = `/uploads/${safeName}`;
         }
 
+        const ICON_MAP = { Slides: 'slideshow', Assignment: 'assignment', Handout: 'description', Lab: 'science' };
         const item = {
             id: crypto.randomUUID(),
-            title: body.title,
-            type: body.type,
-            course: body.course,
+            title: String(body.title).trim(),
+            type: String(body.type).trim(),
+            course: String(body.course).trim(),
             lecturer: sessionUser.user.name,
-            description: body.description,
+            description: String(body.description).trim(),
             fileName,
-            size: body.size || 'Unknown size',
+            size: String(body.size || 'Unknown size').slice(0, 30),
             uploaded: formatUploadDate(),
             dueDate: body.dueDate || '',
-            icon: body.icon || ({
-                Slides: 'slideshow',
-                Assignment: 'assignment',
-                Handout: 'description',
-                Lab: 'science'
-            }[body.type] || 'description'),
+            icon: ICON_MAP[body.type] || 'description',
             filePath
         };
         sessionUser.db.resources.unshift(item);
         sessionUser.db.announcements.unshift({
-            title: `${body.course}: new ${body.type.toLowerCase()} uploaded`,
+            title: `${item.course}: new ${item.type.toLowerCase()} uploaded`,
             time: 'Just now',
             color: '#3d5af1'
         });
-        writeDb(sessionUser.db);
+        await writeDb(sessionUser.db);
         sendJson(res, 201, { resource: item });
         return;
     }
@@ -387,7 +470,22 @@ function resolveStaticPath(urlPath) {
     return fullPath;
 }
 
-migratePasswords();
+// Periodically clean up expired sessions and rate limit entries
+setInterval(async () => {
+    try {
+        const db = await readDb();
+        const before = db.sessions.length;
+        db.sessions = db.sessions.filter(isSessionValid);
+        if (db.sessions.length < before) await writeDb(db);
+    } catch (e) {}
+}, 60 * 60 * 1000);
+
+setInterval(() => {
+    const now = Date.now();
+    for (const [ip, entry] of loginAttempts.entries()) {
+        if (now - entry.windowStart > RATE_LIMIT_WINDOW_MS) loginAttempts.delete(ip);
+    }
+}, RATE_LIMIT_WINDOW_MS);
 
 const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
@@ -410,6 +508,11 @@ const server = http.createServer(async (req, res) => {
     }
 });
 
-server.listen(PORT, () => {
-    console.log(`UMS server running at http://localhost:${PORT}`);
+migratePasswords().then(() => {
+    server.listen(PORT, () => {
+        console.log(`UMS server running at http://localhost:${PORT}`);
+    });
+}).catch((err) => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
 });

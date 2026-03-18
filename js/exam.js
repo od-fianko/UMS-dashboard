@@ -1,8 +1,8 @@
 function renderStats(stats) {
     document.getElementById('exam-stats').innerHTML = `
-        <div class="sc"><div class="sc-icon ic-blue"><span class="material-icons-sharp">event</span></div><div><div class="sc-val">${stats.scheduled}</div><div class="sc-lbl">Scheduled Exams</div></div></div>
-        <div class="sc"><div class="sc-icon ic-red"><span class="material-icons-sharp">timer</span></div><div><div class="sc-val">${stats.countdown}</div><div class="sc-lbl">Until First Exam</div></div></div>
-        <div class="sc"><div class="sc-icon ic-green"><span class="material-icons-sharp">room</span></div><div><div class="sc-val">${stats.hall}</div><div class="sc-lbl">Primary Hall</div></div></div>
+        <div class="sc"><div class="sc-icon ic-blue"><span class="material-icons-sharp">event</span></div><div><div class="sc-val">${UMS.esc(String(stats.scheduled))}</div><div class="sc-lbl">Scheduled Exams</div></div></div>
+        <div class="sc"><div class="sc-icon ic-red"><span class="material-icons-sharp">timer</span></div><div><div class="sc-val">${UMS.esc(String(stats.countdown))}</div><div class="sc-lbl">Until First Exam</div></div></div>
+        <div class="sc"><div class="sc-icon ic-green"><span class="material-icons-sharp">room</span></div><div><div class="sc-val">${UMS.esc(String(stats.hall))}</div><div class="sc-lbl">Primary Hall</div></div></div>
     `;
 }
 
@@ -10,11 +10,11 @@ function renderRow(item) {
     const statusClass = String(item.status).toLowerCase() === 'completed' ? 'completed-badge' : 'upcoming-badge';
     return `
         <tr>
-            <td data-label="Date"><div class="date-cell"><div class="date-box"><div class="dd">${item.date.day}</div><div class="mm">${item.date.month}</div></div>${item.date.weekday}</div></td>
-            <td data-label="Time">${item.time}</td>
-            <td data-label="Subject"><span class="subj-pill"><span class="material-icons-sharp" style="font-size:.85rem">${item.icon}</span>${item.subject}</span></td>
-            <td data-label="Room"><span class="room-chip">${item.room}</span></td>
-            <td data-label="Status"><span class="${statusClass}">${item.status}</span></td>
+            <td data-label="Date"><div class="date-cell"><div class="date-box"><div class="dd">${UMS.esc(item.date.day)}</div><div class="mm">${UMS.esc(item.date.month)}</div></div>${UMS.esc(item.date.weekday)}</div></td>
+            <td data-label="Time">${UMS.esc(item.time)}</td>
+            <td data-label="Subject"><span class="subj-pill"><span class="material-icons-sharp" style="font-size:.85rem">${UMS.esc(item.icon)}</span>${UMS.esc(item.subject)}</span></td>
+            <td data-label="Room"><span class="room-chip">${UMS.esc(item.room)}</span></td>
+            <td data-label="Status"><span class="${statusClass}">${UMS.esc(item.status)}</span></td>
         </tr>
     `;
 }
@@ -40,7 +40,7 @@ function renderErrorState(message) {
                 <div class="state-panel">
                     <span class="material-icons-sharp">error_outline</span>
                     <h3>Unable to load exams</h3>
-                    <p>${message}</p>
+                    <p>${UMS.esc(message)}</p>
                     <button class="retry-btn" type="button" id="retry-exams">Try again</button>
                 </div>
             </td>

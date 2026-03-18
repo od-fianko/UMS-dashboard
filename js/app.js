@@ -71,6 +71,27 @@ tbody tr{transition:background .15s,opacity .2s;}
         }
     }
 
+    /* ── HTML escaper (prevents XSS when inserting into innerHTML) ── */
+    function esc(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#x27;');
+    }
+
+    /* ── Time parser (shared across pages) ── */
+    function getMinutes(timeStr) {
+        if (!timeStr || timeStr === '-') return -1;
+        const m = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+        if (!m) return -1;
+        let h = parseInt(m[1]);
+        if (m[3].toUpperCase() === 'PM' && h !== 12) h += 12;
+        if (m[3].toUpperCase() === 'AM' && h === 12) h = 0;
+        return h * 60 + parseInt(m[2]);
+    }
+
     /* ── Toast ── */
     function toast(message, type, duration) {
         type = type || 'info';
@@ -85,7 +106,7 @@ tbody tr{transition:background .15s,opacity .2s;}
         const icons = { success: 'check_circle', error: 'error_outline', info: 'info', warning: 'warning' };
         const el = document.createElement('div');
         el.className = 'ums-toast ' + type;
-        el.innerHTML = '<span class="material-icons-sharp">' + (icons[type] || 'info') + '</span>' + message;
+        el.innerHTML = '<span class="material-icons-sharp">' + (icons[type] || 'info') + '</span>' + esc(message);
         container.appendChild(el);
         setTimeout(function () {
             el.style.opacity = '0';
@@ -218,7 +239,7 @@ tbody tr{transition:background .15s,opacity .2s;}
             const value = row.querySelector('.dd-value');
             if (!label || !value) return;
             const text = label.textContent.trim().toLowerCase();
-            if (text === 'course') value.innerHTML = user.program + '<br>' + user.level;
+            if (text === 'course') value.innerHTML = esc(user.program) + '<br>' + esc(user.level);
             if (text === 'student id') {
                 label.textContent = user.role === 'lecturer' ? 'Staff ID' : 'Student ID';
                 value.textContent = user.id;
@@ -305,6 +326,8 @@ tbody tr{transition:background .15s,opacity .2s;}
         toast,
         showProgress,
         advanceProgress,
-        hideProgress
+        hideProgress,
+        esc,
+        getMinutes
     };
 })();
