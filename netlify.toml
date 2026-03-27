@@ -1,0 +1,69 @@
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+[[redirects]]
+  from = "/api/auth/login"
+  to = "/.netlify/functions/auth-login"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/auth/forgot"
+  to = "/.netlify/functions/auth-forgot"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/auth/me"
+  to = "/.netlify/functions/auth-me"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/auth/logout"
+  to = "/.netlify/functions/auth-logout"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/users/password"
+  to = "/.netlify/functions/users-password"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/dashboard"
+  to = "/.netlify/functions/dashboard"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/timetable"
+  to = "/.netlify/functions/timetable"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/exams"
+  to = "/.netlify/functions/exams"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/lecturers"
+  to = "/.netlify/functions/lecturers"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/consultations"
+  to = "/.netlify/functions/consultations"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/resources"
+  to = "/.netlify/functions/resources"
+  status = 200
+  force = true

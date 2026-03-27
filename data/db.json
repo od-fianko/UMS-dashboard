@@ -23,9 +23,9 @@
   ],
   "sessions": [
     {
-      "token": "00e1e92b77af717fea25339ea79e2e130ca3f33fa8979846",
-      "userId": "0005678",
-      "createdAt": "2026-03-18T10:37:26.514Z"
+      "token": "745ab1bb91185b7315f3fc2494b48a9c48517a8b97a42c64",
+      "userId": "LEC001",
+      "createdAt": "2026-03-27T22:25:32.944Z"
     }
   ],
   "attendance": [
@@ -553,6 +553,13 @@
       "lecturerId": "LEC006",
       "lecturerName": "Prof. James Otieno",
       "createdAt": "2026-03-17T22:53:54.948Z"
+    },
+    {
+      "id": "4d0bc5ae-33a3-4b12-848d-0cf0053ab650",
+      "studentId": "0005678",
+      "lecturerId": "LEC001",
+      "lecturerName": "Dr. Gaddafi",
+      "createdAt": "2026-03-20T20:26:49.515Z"
     }
   ]
 }
