@@ -132,12 +132,30 @@ tbody tr{transition:background .15s,opacity .2s;}
         ];
     }
 
+    function normalizeNavHref(href) {
+        if (!href) return '';
+        try {
+            const url = new URL(href, window.location.origin + window.location.pathname);
+            const path = url.pathname.replace(/\/+/g, '/');
+            const file = path.split('/').pop() || 'index.html';
+            return file.toLowerCase();
+        } catch (error) {
+            return String(href)
+                .split('?')[0]
+                .split('#')[0]
+                .replace(/^\.?\//, '')
+                .split('/')
+                .pop()
+                .toLowerCase();
+        }
+    }
+
     function syncDesktopNav(role) {
         const nav = document.querySelector('.nav-center');
         if (!nav) return;
-        const allowed = getNavPages(role).map(function (page) { return page.href; });
+        const allowed = getNavPages(role).map(function (page) { return normalizeNavHref(page.href); });
         nav.querySelectorAll('a.nav-item').forEach(function (item) {
-            const href = item.getAttribute('href');
+            const href = normalizeNavHref(item.getAttribute('href') || item.href);
             item.style.display = allowed.includes(href) ? '' : 'none';
         });
     }
