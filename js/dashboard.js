@@ -165,7 +165,15 @@ function renderStudentDashboard(data, user) {
     const tt = data.timetable;
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const todayNum = new Date().getDay();
-    let day = todayNum;
+    const hasClasses = (rows) => Array.isArray(rows) && rows.length && rows[0].r !== '-';
+    const findNextScheduledDay = (startDay) => {
+        for (let offset = 0; offset < 7; offset += 1) {
+            const candidate = (startDay + offset) % 7;
+            if (hasClasses(tt[candidate])) return candidate;
+        }
+        return startDay;
+    };
+    let day = findNextScheduledDay(todayNum);
 
     function renderTT() {
         const now = new Date();
@@ -201,8 +209,16 @@ function renderLecturerDashboard(data, user) {
     /* Teaching schedule */
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const todayNum = new Date().getDay();
-    let day = todayNum;
     const tt = data.teachingSchedule;
+    const hasClasses = (rows) => Array.isArray(rows) && rows.length && rows[0].r !== '-';
+    const findNextScheduledDay = (startDay) => {
+        for (let offset = 0; offset < 7; offset += 1) {
+            const candidate = (startDay + offset) % 7;
+            if (hasClasses(tt[candidate])) return candidate;
+        }
+        return startDay;
+    };
+    let day = findNextScheduledDay(todayNum);
 
     function renderSchedule() {
         const now = new Date();

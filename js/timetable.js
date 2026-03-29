@@ -5,9 +5,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { timetable } = await UMS.api('/api/timetable');
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const today = new Date().getDay();
-    let cur = today;
     const titleEl = document.querySelector('.stitle');
     const tableHeaders = document.querySelectorAll('thead th');
+    const hasClasses = (rows) => Array.isArray(rows) && rows.length && rows[0].r !== '-';
+    const findNextScheduledDay = (startDay) => {
+        for (let offset = 0; offset < 7; offset += 1) {
+            const candidate = (startDay + offset) % 7;
+            if (hasClasses(timetable[candidate])) return candidate;
+        }
+        return startDay;
+    };
+    let cur = findNextScheduledDay(today);
 
     if (titleEl) titleEl.textContent = isLecturer ? 'Teaching Schedule' : 'Timetable';
     if (tableHeaders[2]) tableHeaders[2].textContent = isLecturer ? 'Course' : 'Subject';
@@ -40,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const now = new Date();
-        const currentMins = now.getHours() * 60 + now.UMS.getMinutes();
+        const currentMins = now.getHours() * 60 + now.getMinutes();
         let nextClassIdx = -1;
 
         document.getElementById('tt-body').innerHTML = rows.map((row, idx) => {
