@@ -48,7 +48,20 @@ function renderGreeting(user) {
 function renderAnnouncements(announcements) {
     const el = document.getElementById('announcements-list');
     if (!el) return;
-    el.innerHTML = announcements.map((item) => `
+    const uniqueAnnouncements = [];
+    const seenAnnouncements = new Set();
+
+    announcements.forEach((item) => {
+        const key = [
+            String(item.title || '').trim().toLowerCase(),
+            String(item.time || '').trim().toLowerCase()
+        ].join('|');
+        if (seenAnnouncements.has(key)) return;
+        seenAnnouncements.add(key);
+        uniqueAnnouncements.push(item);
+    });
+
+    el.innerHTML = uniqueAnnouncements.map((item) => `
         <div class="ann-row">
             <div class="ann-dot" style="background:${UMS.esc(item.color)}"></div>
             <div>
@@ -87,7 +100,17 @@ function renderStudentDashboard(data, user) {
             <div class="att-last" style="color:${statusColor};font-weight:600;font-size:.7rem">${statusLabel}</div>
         </div>`;
     };
-    document.getElementById('att-grid').innerHTML = data.attendance.map(card).join('');
+    const uniqueAttendance = [];
+    const seenAttendance = new Set();
+
+    data.attendance.forEach((item) => {
+        const key = String(item.name || '').trim().toLowerCase();
+        if (seenAttendance.has(key)) return;
+        seenAttendance.add(key);
+        uniqueAttendance.push(item);
+    });
+
+    document.getElementById('att-grid').innerHTML = uniqueAttendance.map(card).join('');
 
     requestAnimationFrame(() => {
         document.querySelectorAll('.d-fill').forEach((el) => {
