@@ -6,10 +6,19 @@ exports.handler = async (event) => {
 
     const supabase = adminClient();
     const { data: rows } = await supabase.from('timetable').select('*');
+    const dedupeDayRows = (dayRows) => dayRows.filter((row, index, list) => {
+        if (index === 0) return true;
+        const prev = list[index - 1];
+        return !(
+            prev.subject === row.subject &&
+            prev.room === row.room &&
+            prev.lesson_type === row.lesson_type
+        );
+    });
 
     const tt = {};
     for (let d = 0; d <= 6; d++) {
-        const dayRows = (rows || []).filter((r) => r.day_of_week === d);
+        const dayRows = dedupeDayRows((rows || []).filter((r) => r.day_of_week === d));
         tt[d] = dayRows.length
             ? dayRows.map((r) => ({ t: r.time, r: r.room, s: r.subject, l: r.lesson_type }))
             : [{ t: '-', r: '-', s: 'No classes - Rest Day', l: '' }];
@@ -25,9 +34,9 @@ exports.handler = async (event) => {
 
         const teachingSchedule = {};
         for (let d = 0; d <= 6; d++) {
-            const dayRows = (rows || []).filter(
+            const dayRows = dedupeDayRows((rows || []).filter(
                 (r) => r.day_of_week === d && courses.includes(r.subject)
-            );
+            ));
             teachingSchedule[d] = dayRows.length
                 ? dayRows.map((r) => ({ t: r.time, r: r.room, s: r.subject, l: r.lesson_type }))
                 : [{ t: '-', r: '-', s: 'No lectures scheduled', l: '' }];
