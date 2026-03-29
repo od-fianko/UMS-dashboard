@@ -153,10 +153,15 @@ tbody tr{transition:background .15s,opacity .2s;}
     function syncDesktopNav(role) {
         const nav = document.querySelector('.nav-center');
         if (!nav) return;
+        nav.querySelectorAll('a.nav-item').forEach(function (item) {
+            item.style.display = '';
+        });
+        if (role !== 'lecturer') return;
+
         const allowed = getNavPages(role).map(function (page) { return normalizeNavHref(page.href); });
         nav.querySelectorAll('a.nav-item').forEach(function (item) {
             const href = normalizeNavHref(item.getAttribute('href') || item.href);
-            item.style.display = allowed.includes(href) ? '' : 'none';
+            if (!allowed.includes(href)) item.style.display = 'none';
         });
     }
 
