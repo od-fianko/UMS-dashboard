@@ -1,15 +1,20 @@
 const { adminClient, getSessionUser, json } = require('./_supabase');
 
 function buildTimetableObj(rows) {
-    const dedupeDayRows = (dayRows) => dayRows.filter((row, index, list) => {
-        if (index === 0) return true;
-        const prev = list[index - 1];
-        return !(
-            prev.subject === row.subject &&
-            prev.room === row.room &&
-            prev.lesson_type === row.lesson_type
-        );
-    });
+    const dedupeDayRows = (dayRows) => {
+        const seen = new Set();
+        return dayRows.filter((row) => {
+            const key = [
+                row.time,
+                row.subject,
+                row.room,
+                row.lesson_type
+            ].map((value) => String(value || '').trim().toLowerCase()).join('|');
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+    };
 
     const tt = {};
     for (let d = 0; d <= 6; d++) {
@@ -47,14 +52,17 @@ exports.handler = async (event) => {
             const rows = (timetableRes.data || []).filter(
                 (r) => r.day_of_week === d && courses.includes(r.subject)
             );
-            const uniqueRows = rows.filter((row, index, list) => {
-                if (index === 0) return true;
-                const prev = list[index - 1];
-                return !(
-                    prev.subject === row.subject &&
-                    prev.room === row.room &&
-                    prev.lesson_type === row.lesson_type
-                );
+            const seen = new Set();
+            const uniqueRows = rows.filter((row) => {
+                const key = [
+                    row.time,
+                    row.subject,
+                    row.room,
+                    row.lesson_type
+                ].map((value) => String(value || '').trim().toLowerCase()).join('|');
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
             });
             teachingSchedule[d] = uniqueRows.length
                 ? uniqueRows.map((r) => ({ t: r.time, r: r.room, s: r.subject, l: r.lesson_type }))

@@ -6,15 +6,20 @@ exports.handler = async (event) => {
 
     const supabase = adminClient();
     const { data: rows } = await supabase.from('timetable').select('*');
-    const dedupeDayRows = (dayRows) => dayRows.filter((row, index, list) => {
-        if (index === 0) return true;
-        const prev = list[index - 1];
-        return !(
-            prev.subject === row.subject &&
-            prev.room === row.room &&
-            prev.lesson_type === row.lesson_type
-        );
-    });
+    const dedupeDayRows = (dayRows) => {
+        const seen = new Set();
+        return dayRows.filter((row) => {
+            const key = [
+                row.time,
+                row.subject,
+                row.room,
+                row.lesson_type
+            ].map((value) => String(value || '').trim().toLowerCase()).join('|');
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+    };
 
     const tt = {};
     for (let d = 0; d <= 6; d++) {
