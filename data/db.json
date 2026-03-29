@@ -21,58 +21,73 @@
       "password": "scrypt$4fa2e34c26c20ccf5f9d84ddce7dc520$268cf635ad0c869013efc55569e4e0e389aceaca1155fb92ead8d9e017d6a2ee00ba9a58c4b1dce225b09dac26b620a5f1cfae20fce2b8236678a3a462f558cc"
     }
   ],
-  "sessions": [
-    {
-      "token": "745ab1bb91185b7315f3fc2494b48a9c48517a8b97a42c64",
-      "userId": "LEC001",
-      "createdAt": "2026-03-27T22:25:32.944Z"
-    }
-  ],
+  "sessions": [],
   "attendance": [
     {
-      "icon": "architecture",
+      "icon": "mouse",
       "color": "#4a90e2",
-      "name": "Computer Architecture",
+      "name": "CSM 357",
       "score": "10/14",
       "pct": 71
     },
     {
-      "icon": "code",
+      "icon": "account_tree",
       "color": "#f5a623",
-      "name": "Advanced Functions",
+      "name": "CSM 387",
       "score": "11/14",
       "pct": 78
     },
     {
-      "icon": "computer",
+      "icon": "web",
       "color": "#7ed321",
-      "name": "Computer Networks",
+      "name": "CSM 399",
       "score": "12/14",
       "pct": 85
     },
     {
-      "icon": "dns",
+      "icon": "account_balance",
       "color": "#e85d75",
-      "name": "DNS & Protocols",
+      "name": "ACF 255",
       "score": "13/14",
       "pct": 93
     },
     {
-      "icon": "router",
+      "icon": "code",
       "color": "#9b59b6",
-      "name": "Router Configuration",
+      "name": "CSM 353",
       "score": "8/14",
       "pct": 57
+    },
+    {
+      "icon": "analytics",
+      "color": "#0ea5e9",
+      "name": "CSM 393",
+      "score": "10/14",
+      "pct": 71
+    },
+    {
+      "icon": "psychology",
+      "color": "#22c88a",
+      "name": "AI 150",
+      "score": "11/14",
+      "pct": 78
+    },
+    {
+      "icon": "smart_toy",
+      "color": "#f59e0b",
+      "name": "CSM 395",
+      "score": "9/14",
+      "pct": 64
     }
   ],
   "announcements": [
     {
-      "title": "CS849: new slides uploaded",
+      "title": "CSM 357: new slides uploaded",
       "time": "Just now",
       "color": "#3d5af1"
     },
     {
-      "title": "CS849: new slides uploaded",
+      "title": "CSM 399: new slides uploaded",
       "time": "Just now",
       "color": "#3d5af1"
     },
@@ -105,19 +120,19 @@
       {
         "t": "09:10 AM",
         "r": "36-718",
-        "s": "DBMS130",
+        "s": "CSM 387",
         "l": "Lecture"
       },
       {
         "t": "10:11 AM",
         "r": "36-718",
-        "s": "MTH166",
+        "s": "CSM 393",
         "l": "Tutorial"
       },
       {
         "t": "12:01 PM",
         "r": "36-718",
-        "s": "NS200",
+        "s": "CSM 399",
         "l": "Lecture"
       }
     ],
@@ -125,25 +140,25 @@
       {
         "t": "09:10 AM",
         "r": "27-304Y",
-        "s": "MTH166",
+        "s": "CSM 393",
         "l": "Tutorial"
       },
       {
         "t": "11:00 AM",
         "r": "28-107",
-        "s": "CS849",
+        "s": "CSM 357",
         "l": "Lecture"
       },
       {
         "t": "12:00 PM",
         "r": "28-107",
-        "s": "CS849",
+        "s": "CSM 357",
         "l": "Lecture"
       },
       {
         "t": "02:00 PM",
         "r": "36-718",
-        "s": "NS200",
+        "s": "CSM 399",
         "l": "Lecture"
       }
     ],
@@ -151,13 +166,13 @@
       {
         "t": "10:00 AM",
         "r": "33-309",
-        "s": "DBMS130",
+        "s": "CSM 387",
         "l": "Lecture"
       },
       {
         "t": "11:00 AM",
         "r": "36-719",
-        "s": "CS200",
+        "s": "CSM 353",
         "l": "Lecture"
       }
     ],
@@ -165,19 +180,19 @@
       {
         "t": "11:00 AM",
         "r": "33-309",
-        "s": "MTH166",
+        "s": "CSM 393",
         "l": "Lecture"
       },
       {
         "t": "01:00 PM",
         "r": "36-719",
-        "s": "CS849",
+        "s": "CSM 357",
         "l": "Lecture"
       },
       {
         "t": "02:00 PM",
         "r": "36-718",
-        "s": "NS200",
+        "s": "CSM 399",
         "l": "Lecture"
       }
     ],
@@ -185,19 +200,19 @@
       {
         "t": "10:00 AM",
         "r": "33-309",
-        "s": "MEC103",
+        "s": "ACF 255",
         "l": "Lecture"
       },
       {
         "t": "11:00 AM",
         "r": "33-309",
-        "s": "MEC103",
+        "s": "ACF 255",
         "l": "Lecture"
       },
       {
         "t": "02:00 PM",
         "r": "33-601",
-        "s": "CS849",
+        "s": "CSM 357",
         "l": "Tutorial"
       }
     ],
@@ -205,19 +220,19 @@
       {
         "t": "09:00 AM",
         "r": "34-604",
-        "s": "DBMS130",
+        "s": "CSM 395",
         "l": "Tutorial"
       },
       {
         "t": "10:00 AM",
         "r": "34-604",
-        "s": "DBMS130",
+        "s": "AI 150",
         "l": "Lecture"
       },
       {
         "t": "01:00 PM",
         "r": "33-309",
-        "s": "MTH166",
+        "s": "CSM 393",
         "l": "Lecture"
       }
     ]
@@ -231,62 +246,42 @@
     },
     "items": [
       {
-        "date": {
-          "day": "24",
-          "month": "Mar",
-          "weekday": "Tuesday"
-        },
+        "date": { "day": "24", "month": "Mar", "weekday": "Tuesday" },
         "time": "09:00 - 12:00 PM",
-        "subject": "CS200",
-        "icon": "computer",
+        "subject": "CSM 353",
+        "icon": "code",
         "room": "36-718",
         "status": "Upcoming"
       },
       {
-        "date": {
-          "day": "26",
-          "month": "Mar",
-          "weekday": "Thursday"
-        },
+        "date": { "day": "26", "month": "Mar", "weekday": "Thursday" },
         "time": "09:00 - 12:00 PM",
-        "subject": "DBMS130",
-        "icon": "dns",
+        "subject": "CSM 387",
+        "icon": "account_tree",
         "room": "36-718",
         "status": "Upcoming"
       },
       {
-        "date": {
-          "day": "28",
-          "month": "Mar",
-          "weekday": "Saturday"
-        },
+        "date": { "day": "28", "month": "Mar", "weekday": "Saturday" },
         "time": "09:00 - 12:00 PM",
-        "subject": "MTH166",
-        "icon": "functions",
+        "subject": "CSM 393",
+        "icon": "analytics",
         "room": "36-718",
         "status": "Upcoming"
       },
       {
-        "date": {
-          "day": "30",
-          "month": "Mar",
-          "weekday": "Monday"
-        },
+        "date": { "day": "30", "month": "Mar", "weekday": "Monday" },
         "time": "09:00 - 12:00 PM",
-        "subject": "NS200",
-        "icon": "router",
+        "subject": "CSM 399",
+        "icon": "web",
         "room": "36-718",
         "status": "Upcoming"
       },
       {
-        "date": {
-          "day": "01",
-          "month": "Apr",
-          "weekday": "Wednesday"
-        },
+        "date": { "day": "01", "month": "Apr", "weekday": "Wednesday" },
         "time": "09:00 - 12:00 PM",
-        "subject": "CS849",
-        "icon": "memory",
+        "subject": "CSM 357",
+        "icon": "mouse",
         "room": "36-718",
         "status": "Upcoming"
       }
@@ -296,16 +291,13 @@
     {
       "id": "LEC001",
       "name": "Dr. Gaddafi",
-      "dept": "Computer Networks",
+      "dept": "Human Computer Interaction",
       "av": "JW",
       "bg": "#3d5af1",
       "status": "available",
       "slabel": "Available",
       "sclass": "sp-avail",
-      "courses": [
-        "CS849",
-        "NS200"
-      ],
+      "courses": ["CSM 357", "CSM 399"],
       "hours": "Mon, Wed - 10:00 AM - 12:00 PM",
       "location": "COS Block, FF5",
       "mode": "Physical",
@@ -314,15 +306,13 @@
     {
       "id": "LEC002",
       "name": "Dr. Peasah",
-      "dept": "Database Systems",
+      "dept": "Data Structures",
       "av": "SC",
       "bg": "#e85d75",
       "status": "available",
       "slabel": "Available",
       "sclass": "sp-avail",
-      "courses": [
-        "DBMS130"
-      ],
+      "courses": ["CSM 387"],
       "hours": "Tue, Thu - 09:00 AM - 11:00 AM",
       "location": "Block 36, Room 204",
       "mode": "Physical",
@@ -331,15 +321,13 @@
     {
       "id": "LEC003",
       "name": "Dr. Michael Brown",
-      "dept": "Mathematics",
+      "dept": "Operations Research",
       "av": "MB",
       "bg": "#22c88a",
       "status": "online",
       "slabel": "Online",
       "sclass": "sp-online",
-      "courses": [
-        "MTH166"
-      ],
+      "courses": ["CSM 393"],
       "hours": "Mon, Fri - 02:00 PM - 04:00 PM",
       "location": "Microsoft Teams",
       "mode": "Virtual",
@@ -348,15 +336,13 @@
     {
       "id": "LEC004",
       "name": "Mr. Kofi Darko",
-      "dept": "Network Engineering",
+      "dept": "Financial Accounting",
       "av": "KD",
       "bg": "#f5a623",
       "status": "available",
       "slabel": "Available",
       "sclass": "sp-avail",
-      "courses": [
-        "NS200"
-      ],
+      "courses": ["ACF 255"],
       "hours": "Wed - 01:00 PM - 03:00 PM",
       "location": "Block 33, Room 101",
       "mode": "Physical",
@@ -365,15 +351,13 @@
     {
       "id": "LEC005",
       "name": "Dr. Abena Frimpong",
-      "dept": "Mechanical Engineering",
+      "dept": "Responsible AI",
       "av": "AF",
       "bg": "#7c3aed",
       "status": "busy",
       "slabel": "In Meeting",
       "sclass": "sp-busy",
-      "courses": [
-        "MEC103"
-      ],
+      "courses": ["AI 150", "CSM 395"],
       "hours": "Tue, Sat - 11:00 AM - 01:00 PM",
       "location": "Block 34, Room 301",
       "mode": "Physical",
@@ -382,16 +366,13 @@
     {
       "id": "LEC006",
       "name": "Prof. James Otieno",
-      "dept": "Computer Science",
+      "dept": "Programming Languages",
       "av": "JO",
       "bg": "#0ea5e9",
       "status": "online",
       "slabel": "Online",
       "sclass": "sp-online",
-      "courses": [
-        "CS849",
-        "CS200"
-      ],
+      "courses": ["CSM 353"],
       "hours": "Thu - 10:00 AM - 12:00 PM",
       "location": "Google Meet",
       "mode": "Virtual",
@@ -400,15 +381,13 @@
     {
       "id": "LEC007",
       "name": "Dr. Efua Asare",
-      "dept": "Mathematics",
+      "dept": "Introduction to AI",
       "av": "EA",
       "bg": "#10b981",
       "status": "available",
       "slabel": "Available",
       "sclass": "sp-avail",
-      "courses": [
-        "MTH166"
-      ],
+      "courses": ["CSM 395"],
       "hours": "Mon, Wed, Fri - 08:00 AM - 10:00 AM",
       "location": "Block 27, Room 110",
       "mode": "Physical",
@@ -417,15 +396,13 @@
     {
       "id": "LEC008",
       "name": "Mr. Bright Asiedu",
-      "dept": "Network Engineering",
+      "dept": "Web Development",
       "av": "BA",
       "bg": "#f59e0b",
       "status": "away",
       "slabel": "On Leave",
       "sclass": "sp-away",
-      "courses": [
-        "NS200"
-      ],
+      "courses": ["CSM 399"],
       "hours": "Unavailable this week",
       "location": "Block 33, Room 205",
       "mode": "Unavailable",
@@ -435,11 +412,11 @@
   "resources": [
     {
       "id": "740b279b-8b77-47a4-b98c-34ddf4ea8b74",
-      "title": "Human Computer Interaction",
+      "title": "HCI Lecture 5 - Evaluation Techniques",
       "type": "Slides",
-      "course": "CS849",
+      "course": "CSM 357",
       "lecturer": "Dr. Gaddafi",
-      "description": "Evaluation techniques",
+      "description": "Evaluation techniques in Human Computer Interaction",
       "fileName": "lecture 5 Evaluation Techniques-1.pptx",
       "size": "3.3 MB",
       "uploaded": "17 Mar, 14:28",
@@ -449,26 +426,26 @@
     },
     {
       "id": "918572ed-1191-4250-ab1a-90d8e348d330",
-      "title": "Computer Networks Week 8",
+      "title": "Survey of PL: Week 8 Notes",
       "type": "Slides",
-      "course": "CS849",
-      "lecturer": "Dr. Gaddafi",
-      "description": "COBER PROTOCOLS",
-      "fileName": "kendall_sad8e_ch03-1.pdf",
+      "course": "CSM 353",
+      "lecturer": "Prof. James Otieno",
+      "description": "Programming paradigms and language classification",
+      "fileName": "csm353-week8.pdf",
       "size": "0.7 MB",
       "uploaded": "10 Mar, 14:30",
       "dueDate": "2026-03-10",
       "icon": "slideshow",
-      "filePath": "/uploads/1773153000823-kendall_sad8e_ch03-1.pdf"
+      "filePath": ""
     },
     {
       "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "title": "Computer Networks Week 6 Slides",
+      "title": "Web Dev: Week 6 Slides",
       "type": "Slides",
-      "course": "NS200",
-      "lecturer": "Dr. Gaddafi",
-      "description": "Routing basics, subnetting recap and practice questions for the next class.",
-      "fileName": "networks-week-6.pdf",
+      "course": "CSM 399",
+      "lecturer": "Mr. Bright Asiedu",
+      "description": "HTTP fundamentals, REST APIs and intro to JavaScript frameworks.",
+      "fileName": "csm399-week6.pdf",
       "size": "3.1 MB",
       "uploaded": "Today, 08:45 AM",
       "dueDate": "",
@@ -477,12 +454,12 @@
     },
     {
       "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-      "title": "DBMS Mini Project Brief",
+      "title": "Data Structures Mini Project Brief",
       "type": "Assignment",
-      "course": "DBMS130",
+      "course": "CSM 387",
       "lecturer": "Dr. Peasah",
-      "description": "Design a normalized schema and submit an ERD with five sample queries.",
-      "fileName": "dbms-project-brief.pdf",
+      "description": "Implement a binary search tree with insertion, deletion and traversal operations.",
+      "fileName": "csm387-project-brief.pdf",
       "size": "1.4 MB",
       "uploaded": "Yesterday, 04:10 PM",
       "dueDate": "2026-03-18",
@@ -491,12 +468,12 @@
     },
     {
       "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
-      "title": "Calculus Revision Handout",
+      "title": "Operations Research Revision Handout",
       "type": "Handout",
-      "course": "MTH166",
+      "course": "CSM 393",
       "lecturer": "Dr. Michael Brown",
-      "description": "Selected revision problems and worked examples for the coming assessment.",
-      "fileName": "mth166-revision.docx",
+      "description": "Selected revision problems and worked examples covering LP and simplex method.",
+      "fileName": "csm393-revision.docx",
       "size": "860 KB",
       "uploaded": "Mar 8, 09:20 AM",
       "dueDate": "",
@@ -505,12 +482,12 @@
     },
     {
       "id": "d4e5f6a7-b8c9-0123-defa-234567890123",
-      "title": "OSI Lab Worksheet",
+      "title": "Web Concepts Lab Worksheet",
       "type": "Lab",
-      "course": "CS849",
-      "lecturer": "Prof. James Otieno",
-      "description": "Lab guide for packet inspection tasks, troubleshooting steps and report template.",
-      "fileName": "osi-lab-sheet.pdf",
+      "course": "CSM 399",
+      "lecturer": "Dr. Gaddafi",
+      "description": "Lab guide for building a responsive webpage using HTML, CSS and basic JavaScript.",
+      "fileName": "csm399-lab-sheet.pdf",
       "size": "2.0 MB",
       "uploaded": "Mar 7, 01:30 PM",
       "dueDate": "2026-03-15",
