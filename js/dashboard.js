@@ -173,7 +173,7 @@ function renderStudentDashboard(data, user) {
         }
         return startDay;
     };
-    let day = findNextScheduledDay(todayNum);
+    let day = todayNum;
 
     function renderTT() {
         const now = new Date();
