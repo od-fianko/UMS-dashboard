@@ -1,5 +1,23 @@
 const { adminClient, getSessionUser, json } = require('./_supabase');
 
+function dedupeExamItems(items) {
+    const seen = new Set();
+    return (items || []).filter((item) => {
+        const key = [
+            item.day,
+            item.month,
+            item.weekday,
+            item.time,
+            item.subject,
+            item.room,
+            item.status
+        ].map((value) => String(value || '').trim().toLowerCase()).join('|');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
 exports.handler = async (event) => {
     const user = await getSessionUser(event);
     if (!user) return json(401, { error: 'Unauthorized' });
@@ -11,7 +29,8 @@ exports.handler = async (event) => {
     ]);
 
     const config = configRes.data || {};
-    const items = (itemsRes.data || []).map((e) => ({
+    const uniqueItems = dedupeExamItems(itemsRes.data || []);
+    const items = uniqueItems.map((e) => ({
         date: { day: e.day, month: e.month, weekday: e.weekday },
         time: e.time,
         subject: e.subject,
@@ -23,7 +42,7 @@ exports.handler = async (event) => {
     return json(200, {
         semester: config.semester || '',
         stats: {
-            scheduled: config.scheduled || items.length,
+            scheduled: items.length,
             countdown: config.countdown || '',
             hall: config.hall || ''
         },

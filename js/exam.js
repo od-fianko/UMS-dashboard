@@ -64,14 +64,39 @@ async function loadExams() {
         const semEl = document.getElementById('exam-semester');
         if (semEl) semEl.textContent = data.semester;
 
-        if (!Array.isArray(data.items) || !data.items.length) {
+        const uniqueItems = Array.isArray(data.items) ? data.items.filter((item, index, list) => {
+            const key = [
+                item.date && item.date.day,
+                item.date && item.date.month,
+                item.date && item.date.weekday,
+                item.time,
+                item.subject,
+                item.room,
+                item.status
+            ].map((value) => String(value || '').trim().toLowerCase()).join('|');
+            return index === list.findIndex((entry) => {
+                const entryKey = [
+                    entry.date && entry.date.day,
+                    entry.date && entry.date.month,
+                    entry.date && entry.date.weekday,
+                    entry.time,
+                    entry.subject,
+                    entry.room,
+                    entry.status
+                ].map((value) => String(value || '').trim().toLowerCase()).join('|');
+                return entryKey === key;
+            });
+        }) : [];
+
+        if (!uniqueItems.length) {
             renderEmptyState();
             setStatusNote('No published exams yet.');
             return;
         }
 
-        document.getElementById('exam-body').innerHTML = data.items.map(renderRow).join('');
-        setStatusNote(`${data.items.length} exam${data.items.length === 1 ? '' : 's'} published for ${data.semester}.`);
+        renderStats(Object.assign({}, data.stats, { scheduled: uniqueItems.length }));
+        document.getElementById('exam-body').innerHTML = uniqueItems.map(renderRow).join('');
+        setStatusNote(`${uniqueItems.length} exam${uniqueItems.length === 1 ? '' : 's'} published for ${data.semester}.`);
     } catch (error) {
         setStatusNote('There was a problem loading your exam schedule.');
         renderErrorState(error.message || 'Please refresh the page and try again.');

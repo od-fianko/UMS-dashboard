@@ -1,5 +1,23 @@
 const { adminClient, getSessionUser, json } = require('./_supabase');
 
+function dedupeExamItems(items) {
+    const seen = new Set();
+    return (items || []).filter((item) => {
+        const key = [
+            item.day,
+            item.month,
+            item.weekday,
+            item.time,
+            item.subject,
+            item.room,
+            item.status
+        ].map((value) => String(value || '').trim().toLowerCase()).join('|');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
 function buildTimetableObj(rows) {
     const dedupeDayRows = (dayRows) => {
         const seen = new Set();
@@ -96,7 +114,7 @@ exports.handler = async (event) => {
             teachingSchedule,
             exams: {
                 semester: '',
-                items: (examRes.data || []).filter((e) => courses.includes(e.subject))
+                items: dedupeExamItems((examRes.data || []).filter((e) => courses.includes(e.subject)))
             },
             consultations,
             myResources: myResourceRows,

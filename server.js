@@ -204,6 +204,24 @@ function formatUploadDate() {
 }
 
 function buildLecturerDashboard(db, user) {
+    const dedupeExamItems = (items) => {
+        const seen = new Set();
+        return (items || []).filter((item) => {
+            const key = [
+                item.date && item.date.day,
+                item.date && item.date.month,
+                item.date && item.date.weekday,
+                item.time,
+                item.subject,
+                item.room,
+                item.status
+            ].map((value) => String(value || '').trim().toLowerCase()).join('|');
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+    };
+
     const lecturer = db.lecturers.find((l) => l.id === user.id);
     const courses = lecturer ? lecturer.courses : [];
 
@@ -213,7 +231,7 @@ function buildLecturerDashboard(db, user) {
         teachingSchedule[day] = rows.length > 0 ? rows : [{ t: '-', r: '-', s: 'No lectures scheduled', l: '' }];
     });
 
-    const examItems = (db.exams.items || []).filter((e) => courses.includes(e.subject));
+    const examItems = dedupeExamItems((db.exams.items || []).filter((e) => courses.includes(e.subject)));
 
     const consultations = db.consultations
         .filter((c) => c.lecturerId === user.id)
@@ -338,7 +356,29 @@ async function handleApi(req, res, url) {
     if (req.method === 'GET' && url.pathname === '/api/exams') {
         const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
-        sendJson(res, 200, sessionUser.db.exams);
+        const seen = new Set();
+        const items = (sessionUser.db.exams.items || []).filter((item) => {
+            const key = [
+                item.date && item.date.day,
+                item.date && item.date.month,
+                item.date && item.date.weekday,
+                item.time,
+                item.subject,
+                item.room,
+                item.status
+            ].map((value) => String(value || '').trim().toLowerCase()).join('|');
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+        sendJson(res, 200, {
+            ...sessionUser.db.exams,
+            stats: {
+                ...sessionUser.db.exams.stats,
+                scheduled: items.length
+            },
+            items
+        });
         return;
     }
 
