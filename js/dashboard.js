@@ -262,14 +262,14 @@ function renderLecturerDashboard(data, user) {
             examsWrap.innerHTML = `<div class="lec-exam-grid">${data.exams.items.map((e, i) => `
                 <div class="lec-exam-card" style="animation-delay:${i * 0.06}s">
                     <div class="lec-exam-date">
-                        <div class="lec-exam-day">${UMS.esc(e.date.day)}</div>
-                        <div class="lec-exam-month">${UMS.esc(e.date.month)}</div>
+                        <div class="lec-exam-day">${UMS.esc(e.day)}</div>
+                        <div class="lec-exam-month">${UMS.esc(e.month)}</div>
                     </div>
                     <div class="lec-exam-info">
                         <div class="lec-exam-subject">
                             <span class="material-icons-sharp" style="font-size:1rem;vertical-align:middle;margin-right:.3rem">${UMS.esc(e.icon)}</span>${UMS.esc(e.subject)}
                         </div>
-                        <div class="lec-exam-meta">${UMS.esc(e.date.weekday)} &middot; ${UMS.esc(e.time)}</div>
+                        <div class="lec-exam-meta">${UMS.esc(e.weekday)} &middot; ${UMS.esc(e.time)}</div>
                         <div class="lec-exam-meta">Room ${UMS.esc(e.room)}</div>
                     </div>
                     <span class="lec-exam-badge">${UMS.esc(e.status)}</span>
@@ -284,18 +284,23 @@ function renderLecturerDashboard(data, user) {
         if (!data.consultations.length) {
             consultList.innerHTML = '<div style="padding:1.2rem 1.5rem;font-size:.83rem;color:var(--text-dim)">No consultation requests yet.</div>';
         } else {
-            consultList.innerHTML = data.consultations.map((c) => {
+            consultList.innerHTML = data.consultations.slice(0, 4).map((c) => {
                 const initials = c.studentName.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
-                const date = new Date(c.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+                const status = c.status || 'pending';
+                const statusColor = status === 'accepted' ? '#22c88a' : status === 'declined' ? '#e85d75' : '#f5a623';
+                const statusLabel = status === 'accepted' ? 'Accepted' : status === 'declined' ? 'Declined' : 'Pending';
+                const subMeta = status === 'accepted' && c.preferred_time
+                    ? `<br><span style="color:#16a870;font-weight:600">${UMS.esc(c.preferred_time)}</span>`
+                    : '';
                 return `<div class="consult-item">
                     <div class="consult-av">${UMS.esc(initials)}</div>
                     <div class="consult-info">
                         <div class="consult-name">${UMS.esc(c.studentName)}</div>
-                        <div class="consult-meta">${UMS.esc(c.studentProgram || 'Student')}</div>
+                        <div class="consult-meta">${UMS.esc(c.studentProgram || 'Student')}${subMeta}</div>
                     </div>
-                    <div class="consult-date">${UMS.esc(date)}</div>
+                    <span style="flex-shrink:0;font-size:.66rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;background:${statusColor}22;color:${statusColor};border:1px solid ${statusColor}40">${UMS.esc(statusLabel)}</span>
                 </div>`;
-            }).join('');
+            }).join('') + `<div style="padding:.65rem 1.15rem;border-top:1px solid var(--border);text-align:right"><a href="consultations.html" style="font-size:.75rem;font-weight:700;color:var(--primary)">Manage all →</a></div>`;
         }
     }
 

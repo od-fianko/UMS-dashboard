@@ -67,3 +67,9 @@
   to = "/.netlify/functions/resources"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/api/consultations/update"
+  to = "/.netlify/functions/consultations-update"
+  status = 200
+  force = true

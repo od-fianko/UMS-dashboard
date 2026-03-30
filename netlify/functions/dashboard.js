@@ -44,7 +44,10 @@ exports.handler = async (event) => {
 
         const lecturer = lecturerRes.data || {};
         const courses = lecturer.courses || [];
-        const myResourceRows = (resourceRes.data || []).filter((item) => item.lecturer === lecturer.name).slice(0, 4);
+        const myResourceRows = (resourceRes.data || []).filter((item) => {
+            if (!item.lecturer || !lecturer.name) return false;
+            return item.lecturer.trim().toLowerCase() === lecturer.name.trim().toLowerCase();
+        }).slice(0, 4);
 
         // Teaching schedule — filtered by lecturer's courses
         const teachingSchedule = {};

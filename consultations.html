@@ -58,13 +58,32 @@
         .mini-value{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--text);}
         .section-title{font-family:'DM Serif Display',serif;font-size:1.5rem;margin:1.2rem 0 .9rem;color:var(--text);}
         .consult-list{display:grid;gap:.9rem;}
-        .consult-card{display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center;padding:1.05rem 1.15rem;border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:var(--shadow-sm);}
-        .consult-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(61,90,241,.12);color:var(--primary);font-weight:700;}
+        .consult-card{display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;padding:1.1rem 1.15rem;border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:var(--shadow-sm);}
+        .consult-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(61,90,241,.12);color:var(--primary);font-weight:700;flex-shrink:0;}
+        .consult-body{min-width:0;}
         .consult-name{font-size:1rem;font-weight:700;color:var(--text);}
         .consult-meta{margin-top:.25rem;color:var(--text-sub);font-size:.83rem;line-height:1.5;}
-        .consult-date{text-align:right;}
-        .consult-day{font-size:.8rem;color:var(--text-dim);}
-        .consult-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.38rem .7rem;border-radius:999px;background:rgba(34,200,138,.1);color:var(--success);font-size:.76rem;font-weight:700;}
+        .consult-date{text-align:right;flex-shrink:0;}
+        .consult-day{font-size:.78rem;color:var(--text-dim);margin-bottom:.4rem;}
+        .consult-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.32rem .65rem;border-radius:999px;font-size:.72rem;font-weight:700;}
+        .cb-accepted{background:rgba(34,200,138,.12);color:#16a870;border:1px solid rgba(34,200,138,.25);}
+        .cb-declined{background:rgba(232,93,117,.1);color:#e85d75;border:1px solid rgba(232,93,117,.2);}
+        .cb-pending{background:rgba(245,166,35,.1);color:#b07800;border:1px solid rgba(245,166,35,.2);}
+        .dark .cb-pending{color:#f5a623;}
+        .consult-actions{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;}
+        .btn-accept{display:inline-flex;align-items:center;gap:.3rem;padding:.42rem .85rem;border-radius:8px;border:none;background:#22c88a;color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;}
+        .btn-accept:hover{background:#1aaf78;}
+        .btn-decline{display:inline-flex;align-items:center;gap:.3rem;padding:.42rem .85rem;border-radius:8px;border:1px solid rgba(232,93,117,.35);background:transparent;color:#e85d75;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s;}
+        .btn-decline:hover{background:rgba(232,93,117,.1);}
+        .accept-form{margin-top:.75rem;}
+        .time-input{width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:.83rem;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;}
+        .time-input:focus{border-color:var(--primary);}
+        .accept-form-btns{display:flex;gap:.5rem;margin-top:.5rem;}
+        .btn-confirm{padding:.4rem .85rem;border-radius:8px;border:none;background:var(--primary);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;}
+        .btn-confirm:hover{background:#2d47d4;}
+        .btn-cancel-sm{padding:.4rem .75rem;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-sub);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;}
+        .btn-cancel-sm:hover{background:var(--surface2);}
+        .preferred-time{display:inline-flex;align-items:center;gap:.3rem;margin-top:.6rem;font-size:.78rem;font-weight:600;color:#16a870;}
         .empty{padding:1.5rem;color:var(--text-dim);font-size:.9rem;}
         .fab{position:fixed;bottom:1.5rem;right:1.5rem;width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-sub);transition:all .2s;z-index:800;}
         .fab:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
