@@ -151,9 +151,8 @@ async function downloadResource(id) {
 
 function resolveResourceUrl(item) {
     if (!item) return '';
-    if (item.filePath) return item.filePath;
-    if (!item.fileName) return '';
-    return `/uploads/${encodeURIComponent(item.fileName)}`;
+    if (item.filePath && /^https?:\/\//i.test(item.filePath)) return item.filePath;
+    return '';
 }
 
 function applyLecturerResourceBranding(info) {
