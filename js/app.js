@@ -117,13 +117,6 @@ tbody tr{transition:background .15s,opacity .2s;}
     }
 
     function getNavPages(role) {
-        if (role === 'lecturer') {
-            return [
-                { href: 'index.html', icon: 'home', label: 'Home' },
-                { href: 'timetable.html', icon: 'calendar_today', label: 'Schedule' },
-                { href: 'resources.html', icon: 'folder_open', label: 'Resources' }
-            ];
-        }
         return [
             { href: 'index.html', icon: 'home', label: 'Home' },
             { href: 'timetable.html', icon: 'calendar_today', label: 'Timetable' },
@@ -156,13 +149,6 @@ tbody tr{transition:background .15s,opacity .2s;}
         if (!nav) return;
         nav.querySelectorAll('a.nav-item').forEach(function (item) {
             item.style.display = '';
-        });
-        if (role !== 'lecturer') return;
-
-        const allowed = getNavPages(role).map(function (page) { return normalizeNavHref(page.href); });
-        nav.querySelectorAll('a.nav-item').forEach(function (item) {
-            const href = normalizeNavHref(item.getAttribute('href') || item.href);
-            if (!allowed.includes(href)) item.style.display = 'none';
         });
     }
 
