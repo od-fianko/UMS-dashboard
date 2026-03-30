@@ -17,12 +17,22 @@ exports.handler = async (event) => {
 
     // ── GET /api/resources ─────────────────────────────────────
     if (event.httpMethod === 'GET') {
+        let lecturerName = user.name;
+        if (user.role === 'lecturer') {
+            const { data: lecturer } = await supabase
+                .from('lecturers')
+                .select('name')
+                .eq('id', user.student_id)
+                .single();
+            if (lecturer && lecturer.name) lecturerName = lecturer.name;
+        }
+
         let query = supabase
             .from('resources')
             .select('*')
             .order('created_at', { ascending: false });
 
-        if (user.role === 'lecturer') query = query.eq('lecturer', user.name);
+        if (user.role === 'lecturer') query = query.eq('lecturer', lecturerName);
 
         const { data: resources } = await query;
 

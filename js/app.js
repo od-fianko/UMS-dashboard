@@ -43,6 +43,8 @@ tbody tr{transition:background .15s,opacity .2s;}
 
 /* Active nav item transition */
 .nav-item{transition:color .18s,background .18s;}
+.nav-center,.ums-mobile-nav{opacity:0;transition:opacity .18s ease;}
+.ums-nav-ready .nav-center,.ums-nav-ready .ums-mobile-nav{opacity:1;}
 `;
     const styleEl = document.createElement('style');
     styleEl.textContent = _css;
@@ -187,6 +189,7 @@ tbody tr{transition:background .15s,opacity .2s;}
         const existingMobileNav = document.querySelector('.ums-mobile-nav');
         if (existingMobileNav) existingMobileNav.remove();
         buildMobileNav(role);
+        document.body.classList.add('ums-nav-ready');
     }
 
     /* ── Token helpers ── */

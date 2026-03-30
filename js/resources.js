@@ -1,6 +1,7 @@
 let activeFilter = 'all';
 let resources = [];
 let currentUser = null;
+let lecturerInfo = null;
 
 function formatDueDate(value) {
     if (!value) return '';
@@ -125,27 +126,62 @@ function fileToDataUrl(file) {
 async function previewResource(id) {
     const item = resources.find((resource) => resource.id === id);
     if (!item) return;
-    if (item.filePath) { window.open(item.filePath, '_blank', 'noopener'); return; }
+    const url = resolveResourceUrl(item);
+    if (url) { window.open(url, '_blank', 'noopener'); return; }
     UMS.toast(`No uploaded file attached to "${item.title}" yet.`, 'warning');
 }
 
 async function downloadResource(id) {
     const item = resources.find((resource) => resource.id === id);
     if (!item) return;
-    if (item.filePath) { window.open(item.filePath, '_blank', 'noopener'); return; }
+    const url = resolveResourceUrl(item);
+    if (url) {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = item.fileName || item.title || 'resource';
+        link.target = '_blank';
+        link.rel = 'noopener';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        return;
+    }
     UMS.toast(`No uploaded file attached to "${item.title}" yet.`, 'warning');
+}
+
+function resolveResourceUrl(item) {
+    if (!item) return '';
+    if (item.filePath) return item.filePath;
+    if (!item.fileName) return '';
+    return `/uploads/${encodeURIComponent(item.fileName)}`;
+}
+
+function applyLecturerResourceBranding(info) {
+    const banner = document.querySelector('.lecturer-banner');
+    if (!banner || !info) return;
+    const title = banner.querySelector('.stitle');
+    const subtitle = banner.querySelector('.subtitle');
+    const eyebrow = banner.querySelector('.lec-eyebrow');
+    if (eyebrow) eyebrow.innerHTML = '<span class="material-icons-sharp" style="font-size:.9rem">school</span> CSM 399 Lecturer Hub';
+    if (title) title.textContent = info.name;
+    if (subtitle) subtitle.textContent = 'Manage files for CSM 399 - Web-Based Concepts and Development. Students should only see resources uploaded by this lecturer here.';
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
     UMS.bindTheme();
     currentUser = await UMS.requireAuth();
+    if (currentUser.role === 'lecturer') {
+        const dashboard = await UMS.api('/api/dashboard');
+        lecturerInfo = dashboard.lecturerInfo || null;
+        applyLecturerResourceBranding(lecturerInfo);
+    }
     const response = await UMS.api('/api/resources');
     resources = response.resources;
     renderResources();
 
     const lecturerField = document.getElementById('res-lecturer');
     if (lecturerField) {
-        lecturerField.value = currentUser.name;
+        lecturerField.value = lecturerInfo && lecturerInfo.name ? lecturerInfo.name : currentUser.name;
         lecturerField.readOnly = true;
     }
 

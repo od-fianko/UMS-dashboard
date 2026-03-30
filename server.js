@@ -227,7 +227,7 @@ function buildLecturerDashboard(db, user) {
         })
         .reverse();
 
-    const myResources = db.resources.filter((r) => r.lecturer === user.name).slice(0, 4);
+    const myResources = db.resources.filter((r) => r.lecturer === (lecturer ? lecturer.name : user.name)).slice(0, 4);
 
     return {
         teachingSchedule,
@@ -380,8 +380,9 @@ async function handleApi(req, res, url) {
     if (req.method === 'GET' && url.pathname === '/api/resources') {
         const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
+        const lecturer = sessionUser.db.lecturers.find((item) => item.id === sessionUser.user.id);
         const resources = sessionUser.user.role === 'lecturer'
-            ? sessionUser.db.resources.filter((item) => item.lecturer === sessionUser.user.name)
+            ? sessionUser.db.resources.filter((item) => item.lecturer === (lecturer ? lecturer.name : sessionUser.user.name))
             : sessionUser.db.resources;
         sendJson(res, 200, { resources });
         return;
@@ -435,12 +436,13 @@ async function handleApi(req, res, url) {
         }
 
         const ICON_MAP = { Slides: 'slideshow', Assignment: 'assignment', Handout: 'description', Lab: 'science' };
+        const lecturer = sessionUser.db.lecturers.find((entry) => entry.id === sessionUser.user.id);
         const item = {
             id: crypto.randomUUID(),
             title: String(body.title).trim(),
             type: String(body.type).trim(),
             course: String(body.course).trim(),
-            lecturer: sessionUser.user.name,
+            lecturer: lecturer ? lecturer.name : sessionUser.user.name,
             description: String(body.description).trim(),
             fileName,
             size: String(body.size || 'Unknown size').slice(0, 30),

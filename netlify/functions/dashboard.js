@@ -39,11 +39,12 @@ exports.handler = async (event) => {
             supabase.from('timetable').select('*'),
             supabase.from('exam_items').select('*'),
             supabase.from('consultations').select('*').eq('lecturer_id', user.student_id).order('created_at', { ascending: false }),
-            supabase.from('resources').select('*').eq('lecturer', user.name).order('created_at', { ascending: false }).limit(4)
+            supabase.from('resources').select('*').order('created_at', { ascending: false }).limit(20)
         ]);
 
         const lecturer = lecturerRes.data || {};
         const courses = lecturer.courses || [];
+        const myResourceRows = (resourceRes.data || []).filter((item) => item.lecturer === lecturer.name).slice(0, 4);
 
         // Teaching schedule — filtered by lecturer's courses
         const teachingSchedule = {};
@@ -95,7 +96,7 @@ exports.handler = async (event) => {
                 items: (examRes.data || []).filter((e) => courses.includes(e.subject))
             },
             consultations,
-            myResources: resourceRes.data || [],
+            myResources: myResourceRows,
             courses,
             lecturerInfo: lecturer
         });
