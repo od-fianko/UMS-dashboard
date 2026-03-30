@@ -35,12 +35,19 @@ async function run() {
             password: user.role === 'student' ? 'student123' : 'lecturer123',
             email_confirm: true
         });
+        let userId;
         if (error) {
-            console.warn(`  Skipped (${error.message})`);
-            continue;
+            console.warn(`  Auth user exists, looking up by email...`);
+            const { data: listData, error: listErr } = await supabase.auth.admin.listUsers();
+            if (listErr) { console.warn(`  Could not list users: ${listErr.message}`); continue; }
+            const existing = (listData.users || []).find((u) => u.email === user.email);
+            if (!existing) { console.warn(`  Could not find existing user, skipping.`); continue; }
+            userId = existing.id;
+        } else {
+            userId = data.user.id;
         }
         const { error: profileErr } = await supabase.from('profiles').upsert({
-            id: data.user.id,
+            id: userId,
             student_id: user.id,
             role: user.role,
             name: user.name,
@@ -48,7 +55,7 @@ async function run() {
             address: user.address || '',
             program: user.program || '',
             level: user.level || ''
-        });
+        }, { onConflict: 'student_id' });
         if (profileErr) console.warn(`  Profile error: ${profileErr.message}`);
         else console.log(`  Profile created.`);
     }
