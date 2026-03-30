@@ -21,10 +21,10 @@ function renderGreeting(user) {
 
     const links = user.role === 'lecturer' ? `
         <a href="resources.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(61,90,241,.09);color:var(--primary);border:1px solid rgba(61,90,241,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(61,90,241,.16)'" onmouseout="this.style.background='rgba(61,90,241,.09)'">
-            <span class="material-icons-sharp" style="font-size:1rem">upload_file</span>Upload
+            <span class="material-icons-sharp" style="font-size:1rem">folder_open</span>Resources
         </a>
-        <a href="lecturers.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(34,200,138,.08);color:#16a870;border:1px solid rgba(34,200,138,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(34,200,138,.15)'" onmouseout="this.style.background='rgba(34,200,138,.08)'">
-            <span class="material-icons-sharp" style="font-size:1rem">people</span>Staff
+        <a href="consultations.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(34,200,138,.08);color:#16a870;border:1px solid rgba(34,200,138,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(34,200,138,.15)'" onmouseout="this.style.background='rgba(34,200,138,.08)'">
+            <span class="material-icons-sharp" style="font-size:1rem">forum</span>Consultations
         </a>` : `
         <a href="exam.html" style="display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .9rem;background:rgba(61,90,241,.09);color:var(--primary);border:1px solid rgba(61,90,241,.14);border-radius:10px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(61,90,241,.16)'" onmouseout="this.style.background='rgba(61,90,241,.09)'">
             <span class="material-icons-sharp" style="font-size:1rem">event</span>Exams
@@ -204,7 +204,6 @@ function renderStudentDashboard(data, user) {
 /* ── LECTURER DASHBOARD ── */
 function renderLecturerDashboard(data, user) {
     renderGreeting(user);
-    renderAnnouncements(data.announcements);
 
     /* Teaching schedule */
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

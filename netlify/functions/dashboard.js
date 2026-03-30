@@ -34,13 +34,12 @@ exports.handler = async (event) => {
 
     if (user.role === 'lecturer') {
         // ── Lecturer dashboard ──────────────────────────────────
-        const [lecturerRes, timetableRes, examRes, consultRes, resourceRes, announcRes] = await Promise.all([
+        const [lecturerRes, timetableRes, examRes, consultRes, resourceRes] = await Promise.all([
             supabase.from('lecturers').select('*').eq('id', user.student_id).single(),
             supabase.from('timetable').select('*'),
             supabase.from('exam_items').select('*'),
             supabase.from('consultations').select('*').eq('lecturer_id', user.student_id).order('created_at', { ascending: false }),
-            supabase.from('resources').select('*').eq('lecturer', user.name).order('created_at', { ascending: false }).limit(4),
-            supabase.from('announcements').select('*').order('created_at', { ascending: false })
+            supabase.from('resources').select('*').eq('lecturer', user.name).order('created_at', { ascending: false }).limit(4)
         ]);
 
         const lecturer = lecturerRes.data || {};
@@ -90,7 +89,6 @@ exports.handler = async (event) => {
         });
 
         return json(200, {
-            announcements: announcRes.data || [],
             teachingSchedule,
             exams: {
                 semester: '',

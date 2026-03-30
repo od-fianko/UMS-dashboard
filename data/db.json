@@ -13,10 +13,10 @@
     {
       "id": "LEC001",
       "role": "lecturer",
-      "name": "Dr. Gaddafi",
-      "email": "gaddafi@ums.edu",
-      "address": "COS Block, FF5",
-      "program": "Department of Computer Science",
+      "name": "DR. (MRS.) LINDA AMOAKO BANNING",
+      "email": "lbanning@ums.edu",
+      "address": "Department of Computer Science, Room 2.12",
+      "program": "Web-Based Concepts and Development",
       "level": "Lecturer",
       "password": "scrypt$4fa2e34c26c20ccf5f9d84ddce7dc520$268cf635ad0c869013efc55569e4e0e389aceaca1155fb92ead8d9e017d6a2ee00ba9a58c4b1dce225b09dac26b620a5f1cfae20fce2b8236678a3a462f558cc"
     }
@@ -278,16 +278,16 @@
   "lecturers": [
     {
       "id": "LEC001",
-      "name": "Dr. Gaddafi",
-      "dept": "Human Computer Interaction",
-      "av": "JW",
+      "name": "DR. (MRS.) LINDA AMOAKO BANNING",
+      "dept": "Web-Based Concepts and Development",
+      "av": "LB",
       "bg": "#3d5af1",
       "status": "available",
       "slabel": "Available",
       "sclass": "sp-avail",
-      "courses": ["CSM 357", "CSM 399"],
+      "courses": ["CSM 399"],
       "hours": "Mon, Wed - 10:00 AM - 12:00 PM",
-      "location": "COS Block, FF5",
+      "location": "Department of Computer Science, Room 2.12",
       "mode": "Physical",
       "micon": "meeting_room"
     },
@@ -400,87 +400,45 @@
   "resources": [
     {
       "id": "740b279b-8b77-47a4-b98c-34ddf4ea8b74",
-      "title": "HCI Lecture 5 - Evaluation Techniques",
+      "title": "Intro to HTML",
       "type": "Slides",
-      "course": "CSM 357",
-      "lecturer": "Dr. Gaddafi",
-      "description": "Evaluation techniques in Human Computer Interaction",
-      "fileName": "lecture 5 Evaluation Techniques-1.pptx",
-      "size": "3.3 MB",
-      "uploaded": "17 Mar, 14:28",
-      "dueDate": "2026-03-17",
+      "course": "CSM 399",
+      "lecturer": "DR. (MRS.) LINDA AMOAKO BANNING",
+      "description": "Introductory lecture notes covering HTML foundations for Web-Based Concepts and Development.",
+      "fileName": "Intro_to_HTML.pdf",
+      "size": "1.4 MB",
+      "uploaded": "Mar 29, 10:48 PM",
+      "dueDate": "",
       "icon": "slideshow",
-      "filePath": "/uploads/1773757728312-lecture-5-Evaluation-Techniques-1.pptx"
+      "filePath": "/uploads/Intro_to_HTML.pdf"
     },
     {
       "id": "918572ed-1191-4250-ab1a-90d8e348d330",
-      "title": "Survey of PL: Week 8 Notes",
-      "type": "Slides",
-      "course": "CSM 353",
-      "lecturer": "Prof. James Otieno",
-      "description": "Programming paradigms and language classification",
-      "fileName": "csm353-week8.pdf",
-      "size": "0.7 MB",
-      "uploaded": "10 Mar, 14:30",
-      "dueDate": "2026-03-10",
-      "icon": "slideshow",
-      "filePath": ""
+      "title": "Unit 1A HTML",
+      "type": "Handout",
+      "course": "CSM 399",
+      "lecturer": "DR. (MRS.) LINDA AMOAKO BANNING",
+      "description": "Unit 1A handout for CSM 399 introducing core HTML page structure and markup concepts.",
+      "fileName": "Unit_1A_HTML.pdf",
+      "size": "781 KB",
+      "uploaded": "Mar 29, 10:47 PM",
+      "dueDate": "",
+      "icon": "description",
+      "filePath": "/uploads/Unit_1A_HTML.pdf"
     },
     {
       "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "title": "Web Dev: Week 6 Slides",
-      "type": "Slides",
-      "course": "CSM 399",
-      "lecturer": "Mr. Bright Asiedu",
-      "description": "HTTP fundamentals, REST APIs and intro to JavaScript frameworks.",
-      "fileName": "csm399-week6.pdf",
-      "size": "3.1 MB",
-      "uploaded": "Today, 08:45 AM",
-      "dueDate": "",
-      "icon": "slideshow",
-      "filePath": ""
-    },
-    {
-      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-      "title": "Data Structures Mini Project Brief",
-      "type": "Assignment",
-      "course": "CSM 387",
-      "lecturer": "Dr. Peasah",
-      "description": "Implement a binary search tree with insertion, deletion and traversal operations.",
-      "fileName": "csm387-project-brief.pdf",
-      "size": "1.4 MB",
-      "uploaded": "Yesterday, 04:10 PM",
-      "dueDate": "2026-03-18",
-      "icon": "assignment",
-      "filePath": ""
-    },
-    {
-      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
-      "title": "Operations Research Revision Handout",
+      "title": "Unit 1B HTML",
       "type": "Handout",
-      "course": "CSM 393",
-      "lecturer": "Dr. Michael Brown",
-      "description": "Selected revision problems and worked examples covering LP and simplex method.",
-      "fileName": "csm393-revision.docx",
-      "size": "860 KB",
-      "uploaded": "Mar 8, 09:20 AM",
+      "course": "CSM 399",
+      "lecturer": "DR. (MRS.) LINDA AMOAKO BANNING",
+      "description": "Unit 1B handout for CSM 399 with additional HTML examples and guided practice.",
+      "fileName": "Unit_1B_HTML.pdf",
+      "size": "309 KB",
+      "uploaded": "Mar 29, 10:48 PM",
       "dueDate": "",
       "icon": "description",
-      "filePath": ""
-    },
-    {
-      "id": "d4e5f6a7-b8c9-0123-defa-234567890123",
-      "title": "Web Concepts Lab Worksheet",
-      "type": "Lab",
-      "course": "CSM 399",
-      "lecturer": "Dr. Gaddafi",
-      "description": "Lab guide for building a responsive webpage using HTML, CSS and basic JavaScript.",
-      "fileName": "csm399-lab-sheet.pdf",
-      "size": "2.0 MB",
-      "uploaded": "Mar 7, 01:30 PM",
-      "dueDate": "2026-03-15",
-      "icon": "science",
-      "filePath": ""
+      "filePath": "/uploads/Unit_1B_HTML.pdf"
     }
   ],
   "consultations": [
@@ -509,7 +467,7 @@
       "id": "0e977e71-c208-4267-a3ad-ca9d4252c7da",
       "studentId": "0005678",
       "lecturerId": "LEC001",
-      "lecturerName": "Dr. Gaddafi",
+      "lecturerName": "DR. (MRS.) LINDA AMOAKO BANNING",
       "createdAt": "2026-03-17T15:05:32.967Z"
     },
     {
@@ -523,7 +481,7 @@
       "id": "4d0bc5ae-33a3-4b12-848d-0cf0053ab650",
       "studentId": "0005678",
       "lecturerId": "LEC001",
-      "lecturerName": "Dr. Gaddafi",
+      "lecturerName": "DR. (MRS.) LINDA AMOAKO BANNING",
       "createdAt": "2026-03-20T20:26:49.515Z"
     }
   ]

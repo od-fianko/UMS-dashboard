@@ -17,10 +17,14 @@ exports.handler = async (event) => {
 
     // ── GET /api/resources ─────────────────────────────────────
     if (event.httpMethod === 'GET') {
-        const { data: resources } = await supabase
+        let query = supabase
             .from('resources')
             .select('*')
             .order('created_at', { ascending: false });
+
+        if (user.role === 'lecturer') query = query.eq('lecturer', user.name);
+
+        const { data: resources } = await query;
 
         // Normalize field names to match frontend expectations
         const normalized = (resources || []).map((r) => ({
@@ -112,13 +116,6 @@ exports.handler = async (event) => {
             .single();
 
         if (insertErr) return json(500, { error: 'Failed to save resource.' });
-
-        // Add announcement
-        await supabase.from('announcements').insert({
-            title: `${item.course}: new ${item.type.toLowerCase()} uploaded`,
-            time: 'Just now',
-            color: '#3d5af1'
-        });
 
         return json(201, {
             resource: {

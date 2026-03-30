@@ -117,6 +117,13 @@ tbody tr{transition:background .15s,opacity .2s;}
     }
 
     function getNavPages(role) {
+        if (role === 'lecturer') {
+            return [
+                { href: 'index.html', icon: 'home', label: 'Home' },
+                { href: 'resources.html', icon: 'folder_open', label: 'Resources' },
+                { href: 'consultations.html', icon: 'forum', label: 'Consultations' }
+            ];
+        }
         return [
             { href: 'index.html', icon: 'home', label: 'Home' },
             { href: 'timetable.html', icon: 'calendar_today', label: 'Timetable' },
@@ -147,9 +154,16 @@ tbody tr{transition:background .15s,opacity .2s;}
     function syncDesktopNav(role) {
         const nav = document.querySelector('.nav-center');
         if (!nav) return;
-        nav.querySelectorAll('a.nav-item').forEach(function (item) {
-            item.style.display = '';
-        });
+        const pages = getNavPages(role);
+        const current = normalizeNavHref(window.location.pathname.split('/').pop() || 'index.html');
+        nav.innerHTML = pages.map(function (page) {
+            const active = current === normalizeNavHref(page.href) ? ' active' : '';
+            return '<a href="' + page.href + '" class="nav-item' + active + '">'
+                + '<span class="material-icons-sharp">' + page.icon + '</span>'
+                + '<span>' + page.label + '</span>'
+                + '<div class="active-bar"></div>'
+                + '</a>';
+        }).join('');
     }
 
     /* ── Mobile bottom navigation ── */

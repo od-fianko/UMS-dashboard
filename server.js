@@ -230,7 +230,6 @@ function buildLecturerDashboard(db, user) {
     const myResources = db.resources.filter((r) => r.lecturer === user.name).slice(0, 4);
 
     return {
-        announcements: db.announcements,
         teachingSchedule,
         exams: { semester: db.exams.semester, items: examItems },
         consultations,
@@ -381,7 +380,10 @@ async function handleApi(req, res, url) {
     if (req.method === 'GET' && url.pathname === '/api/resources') {
         const sessionUser = await requireAuth(req, res);
         if (!sessionUser) return;
-        sendJson(res, 200, { resources: sessionUser.db.resources });
+        const resources = sessionUser.user.role === 'lecturer'
+            ? sessionUser.db.resources.filter((item) => item.lecturer === sessionUser.user.name)
+            : sessionUser.db.resources;
+        sendJson(res, 200, { resources });
         return;
     }
 
@@ -448,11 +450,6 @@ async function handleApi(req, res, url) {
             filePath
         };
         sessionUser.db.resources.unshift(item);
-        sessionUser.db.announcements.unshift({
-            title: `${item.course}: new ${item.type.toLowerCase()} uploaded`,
-            time: 'Just now',
-            color: '#3d5af1'
-        });
         await writeDb(sessionUser.db);
         sendJson(res, 201, { resource: item });
         return;
