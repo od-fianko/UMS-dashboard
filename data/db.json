@@ -234,7 +234,11 @@
     },
     "items": [
       {
-        "date": { "day": "24", "month": "Mar", "weekday": "Tuesday" },
+        "date": {
+          "day": "24",
+          "month": "Mar",
+          "weekday": "Tuesday"
+        },
         "time": "09:00 - 12:00 PM",
         "subject": "CSM 353",
         "icon": "code",
@@ -242,7 +246,11 @@
         "status": "Upcoming"
       },
       {
-        "date": { "day": "26", "month": "Mar", "weekday": "Thursday" },
+        "date": {
+          "day": "26",
+          "month": "Mar",
+          "weekday": "Thursday"
+        },
         "time": "09:00 - 12:00 PM",
         "subject": "CSM 387",
         "icon": "account_tree",
@@ -250,7 +258,11 @@
         "status": "Upcoming"
       },
       {
-        "date": { "day": "28", "month": "Mar", "weekday": "Saturday" },
+        "date": {
+          "day": "28",
+          "month": "Mar",
+          "weekday": "Saturday"
+        },
         "time": "09:00 - 12:00 PM",
         "subject": "CSM 393",
         "icon": "analytics",
@@ -258,7 +270,11 @@
         "status": "Upcoming"
       },
       {
-        "date": { "day": "30", "month": "Mar", "weekday": "Monday" },
+        "date": {
+          "day": "30",
+          "month": "Mar",
+          "weekday": "Monday"
+        },
         "time": "09:00 - 12:00 PM",
         "subject": "CSM 399",
         "icon": "web",
@@ -266,7 +282,11 @@
         "status": "Upcoming"
       },
       {
-        "date": { "day": "01", "month": "Apr", "weekday": "Wednesday" },
+        "date": {
+          "day": "01",
+          "month": "Apr",
+          "weekday": "Wednesday"
+        },
         "time": "09:00 - 12:00 PM",
         "subject": "CSM 357",
         "icon": "mouse",
@@ -285,7 +305,9 @@
       "status": "available",
       "slabel": "Available",
       "sclass": "sp-avail",
-      "courses": ["CSM 399"],
+      "courses": [
+        "CSM 399"
+      ],
       "hours": "Mon, Wed - 10:00 AM - 12:00 PM",
       "location": "Department of Computer Science, Room 2.12",
       "mode": "Physical",
@@ -300,7 +322,9 @@
       "status": "available",
       "slabel": "Available",
       "sclass": "sp-avail",
-      "courses": ["CSM 387"],
+      "courses": [
+        "CSM 387"
+      ],
       "hours": "Tue, Thu - 09:00 AM - 11:00 AM",
       "location": "Block 36, Room 204",
       "mode": "Physical",
@@ -315,7 +339,9 @@
       "status": "online",
       "slabel": "Online",
       "sclass": "sp-online",
-      "courses": ["CSM 393"],
+      "courses": [
+        "CSM 393"
+      ],
       "hours": "Mon, Fri - 02:00 PM - 04:00 PM",
       "location": "Microsoft Teams",
       "mode": "Virtual",
@@ -330,7 +356,9 @@
       "status": "available",
       "slabel": "Available",
       "sclass": "sp-avail",
-      "courses": ["ACF 255"],
+      "courses": [
+        "ACF 255"
+      ],
       "hours": "Wed - 01:00 PM - 03:00 PM",
       "location": "Block 33, Room 101",
       "mode": "Physical",
@@ -338,15 +366,17 @@
     },
     {
       "id": "LEC005",
-      "name": "Dr. Abena Frimpong",
-      "dept": "Responsible AI",
-      "av": "AF",
+      "name": "DR. (MRS.) ROSE-MARY OWUSUAA MENSAH GYENING",
+      "dept": "Human-Computer Interaction",
+      "av": "RG",
       "bg": "#7c3aed",
-      "status": "busy",
-      "slabel": "In Meeting",
-      "sclass": "sp-busy",
-      "courses": ["AI 150", "CSM 395"],
-      "hours": "Tue, Sat - 11:00 AM - 01:00 PM",
+      "status": "available",
+      "slabel": "Available",
+      "sclass": "sp-avail",
+      "courses": [
+        "CSM 357"
+      ],
+      "hours": "Mon, Wed - 09:00 AM - 11:00 AM",
       "location": "Block 34, Room 301",
       "mode": "Physical",
       "micon": "meeting_room"
@@ -360,7 +390,9 @@
       "status": "online",
       "slabel": "Online",
       "sclass": "sp-online",
-      "courses": ["CSM 353"],
+      "courses": [
+        "CSM 353"
+      ],
       "hours": "Thu - 10:00 AM - 12:00 PM",
       "location": "Google Meet",
       "mode": "Virtual",
@@ -375,7 +407,9 @@
       "status": "available",
       "slabel": "Available",
       "sclass": "sp-avail",
-      "courses": ["CSM 395"],
+      "courses": [
+        "CSM 395"
+      ],
       "hours": "Mon, Wed, Fri - 08:00 AM - 10:00 AM",
       "location": "Block 27, Room 110",
       "mode": "Physical",
@@ -390,7 +424,9 @@
       "status": "away",
       "slabel": "On Leave",
       "sclass": "sp-away",
-      "courses": ["CSM 399"],
+      "courses": [
+        "CSM 399"
+      ],
       "hours": "Unavailable this week",
       "location": "Block 33, Room 205",
       "mode": "Unavailable",
