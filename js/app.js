@@ -7,13 +7,13 @@
     const _css = `
 /* ─── UMS Global Additions ─── */
 /* Toast */
-.ums-toasts{position:fixed;bottom:5.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:.5rem;z-index:2000;pointer-events:none;align-items:center;}
-.ums-toast{padding:.72rem 1.3rem;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:.5rem;box-shadow:0 8px 28px rgba(0,0,0,.22);pointer-events:auto;white-space:nowrap;animation:ums-toast-in .28s cubic-bezier(.4,0,.2,1);transition:opacity .3s,transform .3s;}
+.ums-toasts{position:fixed;bottom:5.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:.5rem;z-index:2000;pointer-events:none;align-items:center;max-width:min(calc(100vw - 2rem),680px);}
+.ums-toast{width:100%;max-width:100%;padding:.72rem 1.3rem;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 8px 28px rgba(0,0,0,.22);pointer-events:auto;white-space:normal;word-break:break-word;text-align:center;animation:ums-toast-in .28s cubic-bezier(.4,0,.2,1);transition:opacity .3s,transform .3s;}
 .ums-toast.success{background:#22c88a;color:#fff;}
 .ums-toast.error{background:#e85d75;color:#fff;}
 .ums-toast.info{background:#3d5af1;color:#fff;}
 .ums-toast.warning{background:#f5a623;color:#fff;}
-.ums-toast .material-icons-sharp{font-size:1.05rem;}
+.ums-toast .material-icons-sharp{font-size:1.05rem;flex:0 0 auto;}
 @keyframes ums-toast-in{from{opacity:0;transform:translateY(14px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 
 /* Mobile Bottom Nav */
@@ -26,7 +26,8 @@
     .ums-mobile-nav{display:block;}
     body{padding-bottom:calc(3.8rem + env(safe-area-inset-bottom,0px))!important;}
     .fab{bottom:calc(4.8rem + env(safe-area-inset-bottom,0px))!important;}
-    .ums-toasts{bottom:calc(6rem + env(safe-area-inset-bottom,0px));}
+    .ums-toasts{left:1rem;right:1rem;transform:none;bottom:calc(6rem + env(safe-area-inset-bottom,0px));max-width:none;align-items:stretch;}
+    .ums-toast{font-size:.88rem;line-height:1.4;padding:.9rem 1rem;}
 }
 
 /* Page progress bar */
